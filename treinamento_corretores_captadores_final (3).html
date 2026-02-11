@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinamento - Corretores Captadores | Crédito Real Imóveis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #ff6b00;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #cccccc;
+        }
+
+        .progress-section {
+            background: rgba(255, 107, 0, 0.1);
+            border: 2px solid #ff6b00;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .progress-bar-container {
+            background: #1a1a1a;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b00 0%, #ff8c00 100%);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .tabs-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-out;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 10px;
+            scroll-behavior: smooth;
+        }
+
+        .tabs-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .tabs-container::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 10px;
+        }
+
+        .tabs-container::-webkit-scrollbar-thumb {
+            background: #ff6b00;
+            border-radius: 10px;
+        }
+
+        .tabs-container::-webkit-scrollbar-thumb:hover {
+            background: #ff8c00;
+        }
+
+        .tab {
+            flex: 0 0 auto;
+            min-width: 200px;
+            max-width: 250px;
+            padding: 15px 20px;
+            background: #2d2d2d;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .tab strong {
+            color: #ff6b00;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .tab:hover {
+            background: #3d3d3d;
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: #ff6b00;
+            border-color: #ff8c00;
+            color: #ffffff;
+        }
+
+        .tab.completed::after {
+            content: ' ✓';
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .module-content {
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .module-content.active {
+            display: block;
+        }
+
+        .module-header {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .module-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .module-header p {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        .video-card {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            border: 2px solid #ff6b00;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 107, 0, 0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.3);
+            border-color: #ff8c00;
+        }
+
+        .video-card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .video-badge {
+            display: inline-block;
+            background: #ff6b00;
+            color: #ffffff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ff6b00;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .play-button::before,
+        .play-button::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid #ff6b00;
+            border-radius: 50%;
+            animation: pulse 2s ease-out infinite;
+        }
+
+        .play-button::after {
+            animation-delay: 1s;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-left: 25px solid #ffffff;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            margin-left: 5px;
+        }
+
+        .click-hint {
+            text-align: center;
+            color: #ff6b00;
+            font-weight: bold;
+            margin: 15px 0;
+            animation: bounce 2s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .video-footer {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #3d3d3d;
+            text-align: center;
+            color: #cccccc;
+        }
+
+        .checklist {
+            background: #2d2d2d;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .checklist h3 {
+            color: #ff6b00;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin: 10px 0;
+            background: #1a1a1a;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            background: #3d3d3d;
+            transform: translateX(5px);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+            accent-color: #ff6b00;
+        }
+
+        .checklist-item.checked {
+            opacity: 0.7;
+            text-decoration: line-through;
+        }
+
+        .completion-section {
+            background: linear-gradient(135deg, #00cc00 0%, #00aa00 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .completion-section h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .completion-icon {
+            font-size: 4rem;
+            animation: rotate-slow 3s linear infinite;
+        }
+
+        @keyframes rotate-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .certificate-alert {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .certificate-alert h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .evaluation-card {
+            background: #1a1a1a;
+            border: 3px solid #ff6b00;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+        }
+
+        .evaluation-card h3 {
+            color: #ff6b00;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .requirements {
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .requirements ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .requirements li {
+            padding: 10px 0;
+            border-bottom: 1px solid #3d3d3d;
+        }
+
+        .requirements li:last-child {
+            border-bottom: none;
+        }
+
+        .requirements li::before {
+            content: '✓';
+            color: #00ff00;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .benefits {
+            margin: 20px 0;
+        }
+
+        .benefits h4 {
+            color: #ff6b00;
+            margin-bottom: 15px;
+        }
+
+        .benefits ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .benefits li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .benefits li::before {
+            content: '🏆';
+            position: absolute;
+            left: 0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #00cc00 0%, #00aa00 100%);
+            color: #ffffff;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-decoration: none;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 204, 0, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 204, 0, 0.5);
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .nav-button {
+            flex: 1;
+            padding: 15px 30px;
+            background: #ff6b00;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            background: #ff8c00;
+            transform: translateY(-2px);
+        }
+
+        .nav-button:disabled {
+            background: #3d3d3d;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .complete-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #00cc00 0%, #00aa00 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .complete-button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 204, 0, 0.3);
+        }
+
+        .final-tip {
+            background: #2d2d2d;
+            border-left: 4px solid #ff6b00;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .final-tip h4 {
+            color: #ff6b00;
+            margin-bottom: 10px;
+        }
+
+        .pdf-section {
+            background: #2d2d2d;
+            border: 2px dashed #ff6b00;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .pdf-header {
+            margin-bottom: 20px;
+        }
+
+        .pdf-download-button {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            color: #ffffff;
+            padding: 18px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .pdf-download-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .tabs-container {
+                gap: 8px;
+            }
+
+            .tab {
+                min-width: 180px;
+                max-width: 220px;
+                padding: 12px 15px;
+                font-size: 0.85rem;
+            }
+
+            .tab strong {
+                font-size: 0.7rem;
+            }
+
+            .navigation-buttons {
+                flex-direction: column;
+            }
+
+            .module-header h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Treinamento - Corretores Captadores</h1>
+            <p>Crédito Real Imóveis | Programa de Desenvolvimento Profissional</p>
+        </div>
+
+        <div class="progress-section">
+            <h3 style="margin-bottom: 15px;">Seu Progresso no Treinamento</h3>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar">0%</div>
+            </div>
+            <p style="text-align: center; margin-top: 10px; color: #cccccc;">
+                <span id="completedModules">0</span> de 9 módulos concluídos
+            </p>
+        </div>
+
+        <div class="tabs-container" id="tabsContainer"></div>
+        
+        <div id="modulesContainer"></div>
+
+        <div class="navigation-buttons">
+            <button class="nav-button" id="prevButton" onclick="navigateModule(-1)">◀ Anterior</button>
+            <button class="nav-button" id="nextButton" onclick="navigateModule(1)">Próximo ▶</button>
+        </div>
+    </div>
+
+    <script>
+        const modules = [
+            {
+                title: "Missão do Corretor Captador",
+                description: "Nesta seção, você compreenderá o papel estratégico do corretor captador e sua importância fundamental na expansão do portfólio de imóveis.",
+                video: "https://vimeo.com/1161900350",
+                checklist: [
+                    "Assisti ao vídeo completo",
+                    "Compreendi os principais conceitos apresentados",
+                    "Identifiquei os pontos de aplicação prática"
+                ]
+            },
+            {
+                title: "Como Buscar Imóveis no Mercado: Estratégias de Captação",
+                description: "Nesta seção, você aprenderá as técnicas e estratégias mais eficazes para buscar e captar imóveis no mercado.",
+                video: "https://vimeo.com/1161900350",
+                checklist: [
+                    "Assisti ao vídeo completo",
+                    "Compreendi os principais conceitos apresentados",
+                    "Identifiquei os pontos de aplicação prática"
+                ]
+            },
+            {
+                title: "Scripts de Abordagem do Proprietário",
+                description: "Nesta seção, você dominará os roteiros de abordagem para estabelecer contato profissional e eficaz com proprietários.",
+                video: "https://vimeo.com/1161900350",
+                checklist: [
+                    "Assisti ao vídeo completo",
+                    "Compreendi os principais conceitos apresentados",
+                    "Identifiquei os pontos de aplicação prática"
+                ]
+            },
+            {
+                title: "Documentação Necessária para Captação",
+                description: "Nesta seção, você conhecerá toda a documentação essencial necessária para o processo de captação de imóveis.",
+                video: "https://vimeo.com/1161900350",
+                checklist: [
+                    "Assisti ao vídeo completo",
+                    "Compreendi os principais conceitos apresentados",
+                    "Identifiquei os pontos de aplicação prática"
+                ]
+            },
+            {
+                title: "App de Captação – Como Cadastrar um Imóvel",
+                description: "Nesta seção, você aprenderá a utilizar o aplicativo de captação e o Salesforce para cadastrar imóveis e gerenciar o kit administrativo.",
+                video: "https://vimeo.com/1161900350",
+                checklist: [
+                    "Assisti ao vídeo completo",
+                    "Compreendi os principais conceitos apresentados",
+                    "Identifiquei os pontos de aplicação prática"
+                ]
+            },
+            {
+                title: "Cobertura das Garantias",
+                description: "Nesta seção, você entenderá os diferentes tipos de garantias locatícias e como apresentá-las aos proprietários.",
+                video: "https://vimeo.com/1161900350",
+                checklist: [
+                    "Assisti ao vídeo completo",
+                    "Compreendi os principais conceitos apresentados",
+                    "Identifiquei os pontos de aplicação prática"
+                ]
+            },
+            {
+                title: "Controle de Pendências e Contrato de Administração (KIT ADM)",
+                description: "Nesta seção, você aprenderá a gerenciar pendências documentais e o Kit de Administração de forma eficiente.",
+                video: "https://vimeo.com/1161900350",
+                checklist: [
+                    "Assisti ao vídeo completo",
+                    "Compreendi os principais conceitos apresentados",
+                    "Identifiquei os pontos de aplicação prática"
+                ]
+            },
+            {
+                title: "Procedimento Comercial de Captação",
+                description: "Nesta seção, você compreenderá o fluxo completo do procedimento comercial de captação de imóveis.",
+                video: "https://vimeo.com/1161900350",
+                checklist: [
+                    "Assisti ao vídeo completo",
+                    "Compreendi os principais conceitos apresentados",
+                    "Identifiquei os pontos de aplicação prática"
+                ]
+            },
+            {
+                title: "Captação de Imóvel Locado",
+                description: "Nesta seção, você desenvolverá as habilidades específicas para captar imóveis que já estão locados.",
+                video: "https://vimeo.com/1161900350",
+                checklist: [
+                    "Assisti ao vídeo completo",
+                    "Compreendi os principais conceitos apresentados",
+                    "Identifiquei os pontos de aplicação prática"
+                ]
+            }
+        ];
+
+        let currentModule = 0;
+        const completedModules = new Set();
+
+        function initializeTabs() {
+            const tabsContainer = document.getElementById('tabsContainer');
+            modules.forEach((module, index) => {
+                const tab = document.createElement('div');
+                tab.className = 'tab';
+                tab.innerHTML = `<strong>Módulo ${index + 1}:</strong><br>${module.title}`;
+                tab.onclick = () => switchModule(index);
+                tabsContainer.appendChild(tab);
+            });
+        }
+
+        function initializeModules() {
+            const modulesContainer = document.getElementById('modulesContainer');
+            
+            modules.forEach((module, index) => {
+                const moduleDiv = document.createElement('div');
+                moduleDiv.className = 'module-content';
+                moduleDiv.id = `module-${index}`;
+                
+                let checklistHTML = '';
+                module.checklist.forEach((item, idx) => {
+                    checklistHTML += `
+                        <div class="checklist-item" onclick="toggleChecklistItem(${index}, ${idx})">
+                            <input type="checkbox" id="check-${index}-${idx}">
+                            <label>${item}</label>
+                        </div>
+                    `;
+                });
+
+                moduleDiv.innerHTML = `
+                    <div class="module-header">
+                        <h2>Módulo ${index + 1}: ${module.title}</h2>
+                        <p>${module.description}</p>
+                    </div>
+
+                    <div class="video-card" onclick="window.open('${module.video}', '_blank')">
+                        <div class="video-card-content">
+                            <div class="video-badge">📹 VÍDEO ESSENCIAL</div>
+                            <div class="play-button">
+                                <div class="play-icon"></div>
+                            </div>
+                            <h3 style="color: #ffffff; font-size: 1.5rem; margin: 20px 0 10px 0; text-align: center;">${module.title}</h3>
+                            <div class="click-hint">👆 Clique aqui para assistir agora</div>
+                            <div class="video-footer">
+                                <p style="color: #ffffff; font-size: 1.1rem; margin-bottom: 15px;">▶️ CLIQUE PARA ASSISTIR O VÍDEO COMPLETO</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pdf-section">
+                        <div class="pdf-header">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <span style="font-size: 2.5rem;">📄</span>
+                                <div>
+                                    <h4 style="color: #ff6b00; font-size: 1.3rem; margin-bottom: 5px;">Baixe o material do vídeo</h4>
+                                    <p style="color: #cccccc; font-size: 0.95rem;">Baixe o material complementar deste módulo para consulta offline</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="pdf-download-button" onclick="event.preventDefault(); alert('Link do PDF ainda não configurado');">
+                            📥 Baixar Material em PDF
+                        </a>
+                    </div>
+
+                    <div class="checklist">
+                        <h3>📋 Checklist de Aprendizado</h3>
+                        ${checklistHTML}
+                    </div>
+
+                    ${index === modules.length - 1 ? `
+                        <div class="completion-section">
+                            <div class="completion-icon">✅</div>
+                            <h2>🎉 PARABÉNS! VOCÊ CONCLUIU O TREINAMENTO!</h2>
+                            <p style="font-size: 1.2rem; margin-top: 10px;">Você completou todos os módulos com sucesso!</p>
+                        </div>
+
+                        <div class="certificate-alert">
+                            <h3>📜 Agora falta apenas um passo para conquistar seu certificado!</h3>
+                            <p style="margin-top: 10px; font-size: 1.1rem;">Realize a avaliação final na Universidade Corporativa</p>
+                        </div>
+
+                        <div class="evaluation-card">
+                            <h3>🎯 PRÓXIMO PASSO: AVALIAÇÃO FINAL</h3>
+                            
+                            <div class="requirements">
+                                <h4 style="color: #ff6b00; margin-bottom: 15px;">📋 Requisitos para Certificação:</h4>
+                                <ul>
+                                    <li><strong>Pontuação mínima:</strong> 70% de aproveitamento</li>
+                                    <li><strong>Local:</strong> Plataforma Universidade Corporativa</li>
+                                    <li><strong>Atenção:</strong> Sem a conclusão da avaliação, o certificado não será emitido</li>
+                                </ul>
+                            </div>
+
+                            <div class="benefits">
+                                <h4>🏆 Benefícios do seu Certificado:</h4>
+                                <ul>
+                                    <li>Comprovação oficial de capacitação profissional</li>
+                                    <li>Reconhecimento das competências desenvolvidas</li>
+                                    <li>Valorização do seu currículo profissional</li>
+                                    <li>Registro permanente no histórico de treinamentos</li>
+                                </ul>
+                            </div>
+
+                            <div style="text-align: center;">
+                                <a href="https://universidade.centraldofranqueado.com.br/[ID_DO_CURSO]" 
+                                   class="cta-button" 
+                                   target="_blank">
+                                    🚀 ACESSAR AVALIAÇÃO AGORA
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="final-tip">
+                            <h4>💡 Dica Importante:</h4>
+                            <p>Antes de iniciar a avaliação, revise os conceitos-chave de cada módulo. Você pode retornar aos vídeos sempre que necessário!</p>
+                        </div>
+                    ` : ''}
+
+                    <button class="complete-button" onclick="markModuleComplete(${index})">
+                        ✅ Marcar Módulo como Concluído
+                    </button>
+                `;
+                
+                modulesContainer.appendChild(moduleDiv);
+            });
+        }
+
+        function switchModule(index) {
+            currentModule = index;
+            
+            document.querySelectorAll('.module-content').forEach(module => {
+                module.classList.remove('active');
+            });
+            document.getElementById(`module-${index}`).classList.add('active');
+            
+            document.querySelectorAll('.tab').forEach((tab, i) => {
+                tab.classList.remove('active');
+                if (i === index) tab.classList.add('active');
+            });
+            
+            updateNavigationButtons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function navigateModule(direction) {
+            const newIndex = currentModule + direction;
+            if (newIndex >= 0 && newIndex < modules.length) {
+                switchModule(newIndex);
+            }
+        }
+
+        function updateNavigationButtons() {
+            document.getElementById('prevButton').disabled = currentModule === 0;
+            document.getElementById('nextButton').disabled = currentModule === modules.length - 1;
+        }
+
+        function toggleChecklistItem(moduleIndex, itemIndex) {
+            const checkbox = document.getElementById(`check-${moduleIndex}-${itemIndex}`);
+            checkbox.checked = !checkbox.checked;
+            checkbox.parentElement.classList.toggle('checked', checkbox.checked);
+        }
+
+        function markModuleComplete(index) {
+            completedModules.add(index);
+            
+            const tabs = document.querySelectorAll('.tab');
+            tabs[index].classList.add('completed');
+            
+            updateProgress();
+            
+            if (index < modules.length - 1) {
+                setTimeout(() => switchModule(index + 1), 500);
+            }
+        }
+
+        function updateProgress() {
+            const progress = (completedModules.size / modules.length) * 100;
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = Math.round(progress) + '%';
+            
+            document.getElementById('completedModules').textContent = completedModules.size;
+        }
+
+        initializeTabs();
+        initializeModules();
+        switchModule(0);
+    </script>
+</body>
+</html>

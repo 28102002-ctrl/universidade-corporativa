@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinamento - Corretores Consultores | Crédito Real</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8533 100%);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .progress-section {
+            background: #2d2d2d;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .progress-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .progress-percentage {
+            font-size: 1.5rem;
+            color: #ff6b00;
+            font-weight: bold;
+        }
+
+        .progress-bar-container {
+            background: #1a1a1a;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b00 0%, #ff8533 100%);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            font-weight: bold;
+        }
+
+        .tabs-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .tab {
+            background: #2d2d2d;
+            color: #fff;
+            border: 2px solid #3d3d3d;
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            position: relative;
+            min-width: 200px;
+            text-align: left;
+        }
+        
+        .tab-number {
+            display: block;
+            font-size: 0.75rem;
+            color: #ff6b00;
+            margin-bottom: 5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .tab-title {
+            display: block;
+            font-size: 0.9rem;
+            line-height: 1.3;
+        }
+
+        .tab:hover {
+            background: #3d3d3d;
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: #ff6b00;
+            border-color: #ff6b00;
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.4);
+        }
+
+        .tab.completed::after {
+            content: '✓';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #00c853;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .module-content {
+            display: none;
+            background: #2d2d2d;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .module-content.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .module-header {
+            margin-bottom: 30px;
+        }
+
+        .module-header h2 {
+            font-size: 2rem;
+            color: #ff6b00;
+            margin-bottom: 15px;
+        }
+
+        .module-header p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        .video-card {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8533 100%);
+            border-radius: 20px;
+            padding: 0;
+            margin: 30px 0;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 10px 40px rgba(255, 107, 0, 0.4);
+        }
+
+        .video-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            to {
+                left: 100%;
+            }
+        }
+
+        .video-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 20px 60px rgba(255, 107, 0, 0.6);
+        }
+        
+        .video-card:hover .play-button {
+            transform: scale(1.15);
+        }
+        
+        .video-card:hover .video-thumbnail {
+            transform: scale(1.05);
+        }
+
+        .video-badge {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-bottom: 0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+        }
+        
+        .video-inner-wrapper {
+            background: #1a1a1a;
+            margin: 4px;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .video-thumbnail {
+            position: relative;
+            height: 280px;
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: transform 0.4s ease;
+        }
+        
+        .video-thumbnail::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 107, 0, 0.2) 0%, transparent 70%);
+        }
+
+        .video-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .play-button {
+            width: 120px;
+            height: 120px;
+            background: #ff6b00;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 10px 40px rgba(255, 107, 0, 0.6);
+            transition: transform 0.3s ease;
+        }
+
+        .play-button::before,
+        .play-button::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            border: 3px solid #ff6b00;
+            animation: pulse 2s infinite;
+        }
+
+        .play-button::before {
+            width: 150px;
+            height: 150px;
+        }
+
+        .play-button::after {
+            width: 180px;
+            height: 180px;
+            animation-delay: 1s;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-left: 35px solid white;
+            border-top: 22px solid transparent;
+            border-bottom: 22px solid transparent;
+            margin-left: 8px;
+        }
+
+        .video-info {
+            text-align: center;
+            margin-top: 25px;
+        }
+        
+        .video-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-hint {
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.1rem;
+            animation: bounce 2s infinite;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .video-footer {
+            margin-top: 0;
+            padding: 25px 30px;
+            border-top: none;
+            background: #2d2d2d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            font-size: 1rem;
+        }
+        
+        .video-footer::before {
+            content: '▶';
+            color: #ff6b00;
+            font-size: 1.2rem;
+        }
+
+        .checklist {
+            background: #1a1a1a;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .checklist h3 {
+            color: #ff6b00;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            margin: 10px 0;
+            background: #2d2d2d;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            background: #3d3d3d;
+            transform: translateX(5px);
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ff6b00;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item.checked .checkbox {
+            background: #ff6b00;
+        }
+
+        .checklist-item.checked .checkbox::after {
+            content: '✓';
+            color: white;
+            font-weight: bold;
+        }
+
+        .completion-section {
+            background: linear-gradient(135deg, #00c853 0%, #00e676 100%);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+            animation: slideIn 0.5s ease;
+        }
+
+        .completion-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .completion-icon {
+            font-size: 4rem;
+            display: inline-block;
+            animation: rotate 2s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .next-step-banner {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8533 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .next-step-banner h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .evaluation-card {
+            background: #1a1a1a;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 3px solid #ff6b00;
+        }
+
+        .evaluation-card h3 {
+            color: #ff6b00;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .requirements {
+            background: #2d2d2d;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .requirements h4 {
+            color: #ff6b00;
+            margin-bottom: 15px;
+        }
+
+        .requirements ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .requirements li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .requirements li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #00c853;
+            font-weight: bold;
+        }
+
+        .benefits-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .benefit-item {
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b00;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: #ff6b00;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ff8533;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: #3d3d3d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4d4d4d;
+        }
+
+        .btn-success {
+            background: #00c853;
+            color: white;
+            font-size: 1.2rem;
+            padding: 20px 40px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-success:hover {
+            background: #00e676;
+            transform: scale(1.05);
+        }
+
+        .btn-complete {
+            background: #00c853;
+            color: white;
+        }
+
+        .btn-complete:hover {
+            background: #00e676;
+        }
+
+        .tip-box {
+            background: #2d2d2d;
+            border-left: 4px solid #ff6b00;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .tip-box strong {
+            color: #ff6b00;
+        }
+        
+        .submodules-section {
+            margin: 40px 0;
+        }
+        
+        .submodules-header {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border-left: 5px solid #ff6b00;
+        }
+        
+        .submodules-header h3 {
+            color: #ff6b00;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .submodules-header p {
+            color: #ccc;
+            font-size: 1rem;
+        }
+        
+        .submodule-card {
+            background: #1a1a1a;
+            border-radius: 15px;
+            margin: 20px 0;
+            overflow: hidden;
+            border: 2px solid #3d3d3d;
+            transition: all 0.3s ease;
+        }
+        
+        .submodule-card:hover {
+            border-color: #ff6b00;
+            box-shadow: 0 5px 20px rgba(255, 107, 0, 0.2);
+        }
+        
+        .submodule-header {
+            background: #2d2d2d;
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .submodule-header:hover {
+            background: #3d3d3d;
+        }
+        
+        .submodule-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+        
+        .submodule-number {
+            background: #ff6b00;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .submodule-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .submodule-toggle {
+            font-size: 1.5rem;
+            color: #ff6b00;
+            transition: transform 0.3s ease;
+        }
+        
+        .submodule-card.active .submodule-toggle {
+            transform: rotate(180deg);
+        }
+        
+        .submodule-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        
+        .submodule-card.active .submodule-content {
+            max-height: 2000px;
+        }
+        
+        .submodule-inner {
+            padding: 30px;
+            background: #1a1a1a;
+        }
+        
+        .pdf-download-section {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+            border: 2px dashed #ff6b00;
+        }
+        
+        .pdf-download-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .pdf-icon {
+            font-size: 2.5rem;
+        }
+        
+        .pdf-download-header h4 {
+            color: #ff6b00;
+            font-size: 1.3rem;
+            margin: 0;
+        }
+        
+        .pdf-download-header p {
+            color: #ccc;
+            margin: 5px 0 0 0;
+            font-size: 0.95rem;
+        }
+        
+        .pdf-download-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: #ff6b00;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .pdf-download-btn:hover {
+            background: #ff8533;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.4);
+        }
+        
+        .pdf-download-btn::before {
+            content: '📄';
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .tabs-container {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+
+            .tab {
+                flex: 0 0 auto;
+                min-width: 180px;
+            }
+
+            .module-content {
+                padding: 20px;
+            }
+
+            .video-thumbnail {
+                height: 200px;
+            }
+            
+            .play-button {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .play-button::before {
+                width: 110px;
+                height: 110px;
+            }
+            
+            .play-button::after {
+                width: 130px;
+                height: 130px;
+            }
+            
+            .play-icon {
+                border-left: 28px solid white;
+                border-top: 18px solid transparent;
+                border-bottom: 18px solid transparent;
+            }
+            
+            .video-info h3 {
+                font-size: 1.3rem;
+            }
+            
+            .video-hint {
+                font-size: 0.95rem;
+            }
+            
+            .video-footer {
+                font-size: 0.85rem;
+                padding: 20px;
+            }
+
+            .navigation-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .submodule-header {
+                padding: 15px;
+            }
+            
+            .submodule-name {
+                font-size: 0.95rem;
+            }
+            
+            .submodule-number {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            
+            .submodule-inner {
+                padding: 20px;
+            }
+            
+            .pdf-download-section {
+                padding: 20px;
+            }
+            
+            .pdf-download-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .pdf-download-header h4 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Treinamento - Corretores Consultores</h1>
+            <p>Desenvolvimento profissional completo para excelência no atendimento e consultoria imobiliária</p>
+        </header>
+
+        <div class="progress-section">
+            <div class="progress-header">
+                <span class="progress-text">Progresso do Treinamento</span>
+                <span class="progress-percentage" id="progressPercentage">0%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="tabs-container" id="tabsContainer"></div>
+
+        <div id="modulesContainer"></div>
+    </div>
+
+    <script>
+        /* ====================================================================
+           SISTEMA DE PROGRESSO INDIVIDUAL
+           Cada corretor tem seu próprio progresso salvo no navegador.
+           Se pausar ou recarregar, continua de onde parou.
+           ==================================================================== */
+        
+        const modules = [
+            {
+                title: 'Missão do Corretor Consultor',
+                description: 'Descubra o verdadeiro papel estratégico do corretor consultor no mercado imobiliário contemporâneo. Neste módulo, você compreenderá como transformar sua atuação de intermediador para consultor de confiança, desenvolvendo uma postura consultiva que agrega valor real aos clientes e diferencia sua atuação no mercado competitivo.',
+                video: 'https://vimeo.com/1161900350?share=copy&fl=sv&fe=ci',
+                checklist: [
+                    'Assisti ao vídeo completo e fiz anotações dos pontos principais',
+                    'Compreendi a missão, valores e diferenciais do corretor consultor',
+                    'Identifiquei as diferenças fundamentais entre corretor tradicional e consultor estratégico',
+                    'Refleti sobre minha postura profissional atual e oportunidades de evolução'
+                ]
+            },
+            {
+                title: 'Scripts de Atendimento ao Locatário',
+                description: 'Domine a arte da comunicação estratégica com locatários através de scripts profissionais testados e aprovados. Aprenda técnicas de abordagem consultiva que geram confiança, resolvem objeções de forma natural e conduzem o cliente com maestria em cada etapa do processo de locação, desde o primeiro contato até o fechamento.',
+                video: 'https://vimeo.com/1161900350?share=copy&fl=sv&fe=ci',
+                hasPdf: true,
+                pdfName: 'Scripts Completos - Atendimento ao Locatário.pdf',
+                checklist: [
+                    'Assisti ao vídeo completo e pratiquei os scripts em voz alta',
+                    'Dominei os scripts para cada etapa do atendimento ao locatário',
+                    'Identifiquei os momentos-chave e gatilhos de cada abordagem',
+                    'Personalizei os scripts adaptando ao meu estilo de comunicação autêntico'
+                ]
+            },
+            {
+                title: 'Salesforce: CRM Comercial',
+                description: 'Transforme sua gestão comercial com o Salesforce, a plataforma líder mundial em CRM. Aprenda a organizar seu pipeline de vendas, nutrir relacionamentos estratégicos, automatizar follow-ups e tomar decisões baseadas em dados concretos. Domine as funcionalidades essenciais que multiplicarão sua produtividade e taxa de conversão.',
+                video: 'https://vimeo.com/1161900350?share=copy&fl=sv&fe=ci',
+                hasSubmodules: true,
+                submodules: [
+                    {
+                        title: 'Painel do Corretor',
+                        video: 'https://vimeo.com/1161900350?share=copy&fl=sv&fe=ci',
+                        pdfName: 'Guia Completo - Painel do Corretor.pdf'
+                    },
+                    {
+                        title: 'Por onde recebo leads e como fazer o primeiro atendimento',
+                        video: 'https://vimeo.com/1161900350?share=copy&fl=sv&fe=ci',
+                        pdfName: 'Manual - Recebimento de Leads e Primeiro Atendimento.pdf'
+                    },
+                    {
+                        title: 'Como pesquisar imóveis para o cliente',
+                        video: 'https://vimeo.com/1161900350?share=copy&fl=sv&fe=ci',
+                        pdfName: 'Tutorial - Pesquisa de Imóveis no Salesforce.pdf'
+                    },
+                    {
+                        title: 'Fase Visita (chaves, registro de visita, movendo)',
+                        video: 'https://vimeo.com/1161900350?share=copy&fl=sv&fe=ci',
+                        pdfName: 'Procedimento - Gestão da Fase de Visitas.pdf'
+                    },
+                    {
+                        title: 'Fase Proposta e Cadastro',
+                        video: 'https://vimeo.com/1161900350?share=copy&fl=sv&fe=ci',
+                        pdfName: 'Guia - Proposta e Cadastro de Clientes.pdf'
+                    },
+                    {
+                        title: 'Fase Contrato',
+                        video: 'https://vimeo.com/1161900350?share=copy&fl=sv&fe=ci',
+                        pdfName: 'Manual - Finalização e Contrato.pdf'
+                    }
+                ],
+                checklist: [
+                    'Assisti ao vídeo completo e explorei a plataforma Salesforce',
+                    'Compreendi a estrutura completa do CRM e seu potencial estratégico',
+                    'Identifiquei as principais funcionalidades para minha rotina comercial',
+                    'Sei como registrar, qualificar e acompanhar leads de forma profissional',
+                    'Concluí todos os submódulos e baixei os materiais de apoio'
+                ]
+            },
+            {
+                title: 'App Power Loc: Operação Completa de Locação',
+                description: 'Desbrave todas as funcionalidades do Power Loc, sua ferramenta definitiva para gestão integrada de locações. Da captação do imóvel até a assinatura do contrato, aprenda a conduzir operações com excelência, garantindo agilidade, conformidade e experiência superior para proprietários e locatários em cada etapa do processo.',
+                video: 'https://vimeo.com/1161900350?share=copy&fl=sv&fe=ci',
+                hasPdf: true,
+                pdfName: 'Guia Completo - Power Loc Operação de Locação.pdf',
+                checklist: [
+                    'Assisti ao vídeo completo e naveguei pelo aplicativo Power Loc',
+                    'Entendi o fluxo operacional completo dentro da plataforma',
+                    'Mapeei todas as etapas da operação de locação no sistema',
+                    'Sei como acessar, navegar e executar processos com autonomia'
+                ]
+            },
+            {
+                title: 'Uso do Chatwoot (Plataforma de Atendimento por WhatsApp)',
+                description: 'Revolucione seu atendimento digital com o Chatwoot e transforme o WhatsApp em uma poderosa ferramenta de relacionamento profissional. Aprenda a organizar conversas, manter histórico detalhado, responder com agilidade e oferecer uma experiência de atendimento que encanta e fideliza clientes no canal de comunicação mais utilizado do Brasil.',
+                video: 'https://vimeo.com/1161900350?share=copy&fl=sv&fe=ci',
+                checklist: [
+                    'Assisti ao vídeo completo e acessei a plataforma Chatwoot',
+                    'Compreendi o funcionamento e potencial da ferramenta',
+                    'Identifiquei boas práticas de atendimento digital profissional',
+                    'Sei como organizar conversas, tags, histórico e manter produtividade'
+                ]
+            },
+            {
+                title: 'Garantias Locatícias',
+                description: 'Torne-se especialista em garantias locatícias e conduza seus clientes com segurança na escolha mais estratégica. Conheça profundamente cada modalidade - fiador, caução, seguro fiança, título de capitalização - suas vantagens, limitações e adequação a diferentes perfis. Consultoria qualificada que gera confiança e acelera fechamentos.',
+                video: 'https://vimeo.com/1161900350?share=copy&fl=sv&fe=ci',
+                hasPdf: true,
+                pdfName: 'Manual Completo - Garantias Locatícias.pdf',
+                checklist: [
+                    'Assisti ao vídeo completo e revisei as modalidades de garantia',
+                    'Identifiquei todos os tipos de garantias locatícias disponíveis',
+                    'Compreendi vantagens, desvantagens e aplicabilidade de cada garantia',
+                    'Sei como orientar clientes estrategicamente na melhor escolha'
+                ]
+            },
+            {
+                title: 'Setor de Vistorias, Chaves e Posses',
+                description: 'Entenda a engrenagem fundamental que garante segurança jurídica e operacional em cada locação: o setor de vistorias, chaves e posses. Aprenda os protocolos, documentação necessária, prazos críticos e como coordenar perfeitamente com a equipe responsável, prevenindo problemas e garantindo processos impecáveis do início ao fim.',
+                video: 'https://vimeo.com/1161900350?share=copy&fl=sv&fe=ci',
+                hasPdf: true,
+                pdfName: 'Procedimento - Vistorias, Chaves e Posses.pdf',
+                checklist: [
+                    'Assisti ao vídeo completo e estudei os procedimentos do setor',
+                    'Compreendi a importância crítica da vistoria para ambas as partes',
+                    'Identifiquei o fluxo completo de chaves, posses e documentação',
+                    'Sei como me comunicar e coordenar efetivamente com o setor responsável'
+                ]
+            },
+            {
+                title: 'Procedimento Comercial de Locações',
+                description: 'Domine o procedimento comercial completo de locações com maestria absoluta. Desde a qualificação inicial do lead até a assinatura do contrato, aprenda cada etapa, documentação obrigatória, prazos legais, análises necessárias e checkpoints de qualidade que garantem operações em conformidade total e experiência excepcional para todos os envolvidos.',
+                video: 'https://vimeo.com/1161900350?share=copy&fl=sv&fe=ci',
+                checklist: [
+                    'Assisti ao vídeo completo e mapeei todo o fluxo comercial',
+                    'Compreendi profundamente todas as etapas do procedimento comercial',
+                    'Identifiquei documentos obrigatórios e requisitos legais de cada fase',
+                    'Sei conduzir o processo comercial completo com autonomia e excelência'
+                ]
+            },
+            {
+                title: 'Atendimento, Negociação, Fidelização e Organização de Rotina',
+                description: 'Desenvolva as competências essenciais que separam corretores medianos de verdadeiros consultores de elite. Aprenda técnicas avançadas de atendimento consultivo, estratégias de negociação ganha-ganha, metodologias de fidelização que geram indicações espontâneas e organização profissional de rotina para máxima produtividade e equilíbrio.',
+                video: 'https://vimeo.com/1161900350?share=copy&fl=sv&fe=ci',
+                hasPdf: true,
+                pdfName: 'Guia Prático - Atendimento, Negociação e Fidelização.pdf',
+                checklist: [
+                    'Assisti ao vídeo completo e refleti sobre minha prática atual',
+                    'Identifiquei técnicas de negociação que aplicarei imediatamente',
+                    'Compreendi estratégias de fidelização e relacionamento de longo prazo',
+                    'Criei um plano de organização da rotina para ganho de produtividade'
+                ]
+            }
+        ];
+
+        let currentModule = 0;
+        const completedModules = new Set();
+        
+        // Sistema de salvamento de progresso individual por usuário
+        // Cada corretor mantém seu próprio progresso salvo no navegador
+
+        function updateProgress() {
+            const progress = (completedModules.size / modules.length) * 100;
+            const progressBar = document.getElementById('progressBar');
+            const progressPercentage = document.getElementById('progressPercentage');
+            
+            progressBar.style.width = progress + '%';
+            progressPercentage.textContent = Math.round(progress) + '%';
+        }
+        
+        // Salvar progresso no localStorage
+        function saveProgress() {
+            const progressData = {
+                currentModule: currentModule,
+                completedModules: Array.from(completedModules),
+                checkedItems: getCheckedItems(),
+                expandedSubmodules: getExpandedSubmodules()
+            };
+            localStorage.setItem('treinamentoCorretor_progresso', JSON.stringify(progressData));
+        }
+        
+        // Carregar progresso do localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('treinamentoCorretor_progresso');
+            if (saved) {
+                try {
+                    const progressData = JSON.parse(saved);
+                    
+                    // Restaurar módulo atual
+                    currentModule = progressData.currentModule || 0;
+                    
+                    // Restaurar módulos completos
+                    if (progressData.completedModules) {
+                        progressData.completedModules.forEach(mod => completedModules.add(mod));
+                    }
+                    
+                    return progressData;
+                } catch (e) {
+                    console.error('Erro ao carregar progresso:', e);
+                    return null;
+                }
+            }
+            return null;
+        }
+        
+        // Obter itens do checklist marcados
+        function getCheckedItems() {
+            const checked = {};
+            document.querySelectorAll('.checklist-item.checked').forEach(item => {
+                const moduleMatch = item.closest('.module-content');
+                if (moduleMatch) {
+                    const moduleId = moduleMatch.id;
+                    const itemIndex = Array.from(item.parentElement.children).indexOf(item);
+                    if (!checked[moduleId]) checked[moduleId] = [];
+                    checked[moduleId].push(itemIndex);
+                }
+            });
+            return checked;
+        }
+        
+        // Obter submódulos expandidos
+        function getExpandedSubmodules() {
+            const expanded = [];
+            document.querySelectorAll('.submodule-card.active').forEach(card => {
+                expanded.push(card.id);
+            });
+            return expanded;
+        }
+        
+        // Restaurar itens do checklist
+        function restoreCheckedItems(checkedItems) {
+            if (!checkedItems) return;
+            
+            Object.keys(checkedItems).forEach(moduleId => {
+                checkedItems[moduleId].forEach(itemIndex => {
+                    const item = document.querySelector(`#${moduleId} .checklist-item:nth-child(${itemIndex + 1})`);
+                    if (item) item.classList.add('checked');
+                });
+            });
+        }
+        
+        // Restaurar submódulos expandidos
+        function restoreExpandedSubmodules(expandedSubmodules) {
+            if (!expandedSubmodules) return;
+            
+            expandedSubmodules.forEach(subId => {
+                const sub = document.getElementById(subId);
+                if (sub) sub.classList.add('active');
+            });
+        }
+
+        function createTabs() {
+            const container = document.getElementById('tabsContainer');
+            modules.forEach((module, index) => {
+                const tab = document.createElement('div');
+                tab.className = 'tab';
+                tab.innerHTML = `
+                    <span class="tab-number">Módulo ${index + 1}</span>
+                    <span class="tab-title">${module.title}</span>
+                `;
+                tab.onclick = () => switchModule(index);
+                container.appendChild(tab);
+            });
+
+            // Tab de conclusão
+            const finalTab = document.createElement('div');
+            finalTab.className = 'tab';
+            finalTab.innerHTML = `
+                <span class="tab-number">Conclusão</span>
+                <span class="tab-title">🎓 Certificação</span>
+            `;
+            finalTab.onclick = () => switchModule(modules.length);
+            container.appendChild(finalTab);
+        }
+
+        function createModuleContent(module, index) {
+            const videoSection = module.hasSubmodules ? '' : `
+                <div class="video-card" onclick="window.open('${module.video}', '_blank')">
+                    <span class="video-badge">🎬 VÍDEO ESSENCIAL</span>
+                    <div class="video-inner-wrapper">
+                        <div class="video-thumbnail">
+                            <div class="video-content">
+                                <div class="play-button">
+                                    <div class="play-icon"></div>
+                                </div>
+                                <div class="video-info">
+                                    <h3>${module.title}</h3>
+                                    <p class="video-hint">
+                                        <span>👆</span>
+                                        <span>Clique aqui para assistir agora</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="video-footer">
+                            <strong>CLIQUE PARA ASSISTIR O VÍDEO COMPLETO</strong>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const pdfSection = (module.hasPdf && !module.hasSubmodules) ? `
+                <div class="pdf-download-section">
+                    <div class="pdf-download-header">
+                        <div class="pdf-icon">📄</div>
+                        <div>
+                            <h4>Baixe o material do vídeo</h4>
+                            <p>Baixe o material complementar deste módulo para consulta offline</p>
+                        </div>
+                    </div>
+                    <button class="pdf-download-btn" onclick="alert('PDF: ${module.pdfName}\\n\\nEm breve você poderá fazer o download deste material!')">
+                        Baixar Material em PDF
+                    </button>
+                </div>
+            ` : '';
+
+            const submodulesSection = module.hasSubmodules ? `
+                <div class="submodules-section">
+                    <div class="submodules-header">
+                        <h3>📚 Submódulos de Treinamento</h3>
+                        <p>Este módulo está dividido em ${module.submodules.length} partes detalhadas. Clique em cada submódulo para acessar o conteúdo.</p>
+                    </div>
+                    ${module.submodules.map((sub, subIndex) => `
+                        <div class="submodule-card" id="submodule-${index}-${subIndex}">
+                            <div class="submodule-header" onclick="toggleSubmodule(${index}, ${subIndex})">
+                                <div class="submodule-title">
+                                    <div class="submodule-number">${subIndex + 1}</div>
+                                    <div class="submodule-name">${sub.title}</div>
+                                </div>
+                                <div class="submodule-toggle">▼</div>
+                            </div>
+                            <div class="submodule-content">
+                                <div class="submodule-inner">
+                                    <div class="video-card" onclick="window.open('${sub.video}', '_blank')">
+                                        <span class="video-badge">🎬 VÍDEO ESSENCIAL</span>
+                                        <div class="video-inner-wrapper">
+                                            <div class="video-thumbnail">
+                                                <div class="video-content">
+                                                    <div class="play-button">
+                                                        <div class="play-icon"></div>
+                                                    </div>
+                                                    <div class="video-info">
+                                                        <h3>${sub.title}</h3>
+                                                        <p class="video-hint">
+                                                            <span>👆</span>
+                                                            <span>Clique aqui para assistir agora</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="video-footer">
+                                                <strong>CLIQUE PARA ASSISTIR O VÍDEO COMPLETO</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="pdf-download-section">
+                                        <div class="pdf-download-header">
+                                            <div class="pdf-icon">📄</div>
+                                            <div>
+                                                <h4>Baixe o material do vídeo</h4>
+                                                <p>Baixe o material complementar deste submódulo para consulta offline</p>
+                                            </div>
+                                        </div>
+                                        <button class="pdf-download-btn" onclick="alert('PDF: ${sub.pdfName}\\n\\nEm breve você poderá fazer o download deste material!')">
+                                            Baixar Material em PDF
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            ` : '';
+
+            return `
+                <div class="module-content" id="module${index}">
+                    <div class="module-header">
+                        <h2>Módulo ${index + 1}: ${module.title}</h2>
+                        <p>${module.description}</p>
+                    </div>
+
+                    ${videoSection}
+                    ${pdfSection}
+                    ${submodulesSection}
+
+                    <div class="checklist">
+                        <h3>📋 Checklist de Aprendizado</h3>
+                        ${module.checklist.map((item, i) => `
+                            <div class="checklist-item" onclick="toggleChecklistItem(${index}, ${i})">
+                                <div class="checkbox"></div>
+                                <span>${item}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="navigation-buttons">
+                        <button class="btn btn-secondary" onclick="previousModule()" ${index === 0 ? 'style="visibility: hidden;"' : ''}>
+                            ← Anterior
+                        </button>
+                        <button class="btn btn-complete" onclick="markAsComplete(${index})">
+                            ✓ Marcar como Concluído
+                        </button>
+                        <button class="btn btn-primary" onclick="nextModule()">
+                            ${index === modules.length - 1 ? 'Finalizar Curso →' : 'Próximo →'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createFinalModule() {
+            return `
+                <div class="module-content" id="moduleFinal">
+                    <div class="completion-section">
+                        <div class="completion-icon">✅</div>
+                        <h2>🎉 CURSO CONCLUÍDO COM SUCESSO!</h2>
+                        <p style="font-size: 1.2rem; margin-top: 10px;">Parabéns por completar todos os módulos do treinamento!</p>
+                    </div>
+
+                    <div class="next-step-banner">
+                        <h3>⚠️ Agora falta apenas um passo para conquistar seu certificado!</h3>
+                    </div>
+
+                    <div class="evaluation-card">
+                        <h3>🎯 PRÓXIMO PASSO OBRIGATÓRIO: Avaliação Final</h3>
+                        
+                        <div class="requirements">
+                            <h4>Requisitos para Certificação:</h4>
+                            <ul>
+                                <li><strong>Pontuação Mínima:</strong> 70% de acertos</li>
+                                <li><strong>Local:</strong> Universidade Corporativa</li>
+                                <li><strong>Tentativas:</strong> Ilimitadas até atingir a nota mínima</li>
+                                <li><strong>Importância:</strong> Sem aprovação na avaliação, você NÃO receberá o certificado</li>
+                            </ul>
+                        </div>
+
+                        <div class="benefits-list">
+                            <div class="benefit-item">
+                                <strong>📜 Certificado Digital</strong>
+                                <p>Reconhecimento oficial da conclusão</p>
+                            </div>
+                            <div class="benefit-item">
+                                <strong>🏆 Validação de Competências</strong>
+                                <p>Comprove seu conhecimento adquirido</p>
+                            </div>
+                            <div class="benefit-item">
+                                <strong>📈 Desenvolvimento Profissional</strong>
+                                <p>Evolução na carreira de corretor consultor</p>
+                            </div>
+                            <div class="benefit-item">
+                                <strong>✅ Registro no Sistema</strong>
+                                <p>Histórico de capacitação atualizado</p>
+                            </div>
+                        </div>
+
+                        <a href="https://universidade.centraldofranqueado.com.br/[ID_DO_CURSO]" target="_blank" class="btn btn-success">
+                            🚀 IR PARA A AVALIAÇÃO
+                        </a>
+
+                        <div class="tip-box">
+                            <strong>💡 Dica Final:</strong> Antes de realizar a avaliação, revise os principais conceitos de cada módulo. Você pode revisar os vídeos e materiais sempre que necessário!
+                        </div>
+                    </div>
+
+                    <div class="navigation-buttons">
+                        <button class="btn btn-secondary" onclick="previousModule()">
+                            ← Voltar
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderModules() {
+            const container = document.getElementById('modulesContainer');
+            let html = '';
+            
+            modules.forEach((module, index) => {
+                html += createModuleContent(module, index);
+            });
+            
+            html += createFinalModule();
+            container.innerHTML = html;
+        }
+
+        function switchModule(index) {
+            currentModule = index;
+            
+            // Atualizar tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach((tab, i) => {
+                tab.classList.remove('active');
+                if (i === index) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // Atualizar conteúdo
+            const contents = document.querySelectorAll('.module-content');
+            contents.forEach((content, i) => {
+                content.classList.remove('active');
+                if ((i === index && index < modules.length) || (index === modules.length && content.id === 'moduleFinal')) {
+                    content.classList.add('active');
+                }
+            });
+            
+            // Salvar progresso
+            saveProgress();
+        }
+
+        function nextModule() {
+            if (currentModule < modules.length) {
+                switchModule(currentModule + 1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function previousModule() {
+            if (currentModule > 0) {
+                switchModule(currentModule - 1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function toggleChecklistItem(moduleIndex, itemIndex) {
+            // Toggle visual e salvar progresso
+            const item = document.querySelector(`#module${moduleIndex} .checklist-item:nth-child(${itemIndex + 1})`);
+            item.classList.toggle('checked');
+            
+            // Salvar progresso
+            saveProgress();
+        }
+        
+        function toggleSubmodule(moduleIndex, subIndex) {
+            // Expande/recolhe submódulo e salva estado
+            const submodule = document.getElementById(`submodule-${moduleIndex}-${subIndex}`);
+            submodule.classList.toggle('active');
+            
+            // Salvar progresso
+            saveProgress();
+        }
+
+        function markAsComplete(moduleIndex) {
+            // Marca como completo e salva progresso
+            completedModules.add(moduleIndex);
+            
+            // Atualizar visual da tab
+            const tabs = document.querySelectorAll('.tab');
+            tabs[moduleIndex].classList.add('completed');
+            
+            // Atualizar progresso
+            updateProgress();
+            
+            // Salvar progresso
+            saveProgress();
+            
+            // Avançar para próximo módulo
+            nextModule();
+        }
+
+        // Inicialização - carregar progresso salvo
+        window.addEventListener('DOMContentLoaded', function() {
+            createTabs();
+            renderModules();
+            
+            // Carregar progresso salvo
+            const savedProgress = loadProgress();
+            
+            if (savedProgress) {
+                // Restaurar tabs completadas
+                completedModules.forEach(modIndex => {
+                    const tabs = document.querySelectorAll('.tab');
+                    if (tabs[modIndex]) {
+                        tabs[modIndex].classList.add('completed');
+                    }
+                });
+                
+                // Restaurar checklist e submódulos
+                restoreCheckedItems(savedProgress.checkedItems);
+                restoreExpandedSubmodules(savedProgress.expandedSubmodules);
+                
+                // Ir para o módulo salvo
+                switchModule(currentModule);
+            } else {
+                // Primeira vez - começar do zero
+                switchModule(0);
+            }
+            
+            updateProgress();
+        });
+    </script>
+</body>
+</html>

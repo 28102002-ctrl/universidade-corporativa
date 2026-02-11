@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEM-VINDO AO DNA CR | Crédito Real Imóveis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #ff6b00 0%, #ff8533 100%);
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            background: linear-gradient(90deg, #ff6b00 0%, #ffaa66 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #cccccc;
+        }
+
+        .progress-section {
+            background: #2d2d2d;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .progress-header span:first-child {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .progress-header span:last-child {
+            color: #ff6b00;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .progress-bar-container {
+            background: #1a1a1a;
+            height: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b00 0%, #ff8533 100%);
+            border-radius: 10px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.5);
+        }
+
+        .tabs-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tab {
+            background: #2d2d2d;
+            border: 2px solid transparent;
+            padding: 15px 30px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .tab:hover {
+            background: #3d3d3d;
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8533 100%);
+            border-color: #ff6b00;
+            box-shadow: 0 4px 20px rgba(255, 107, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .tab.completed::before {
+            content: "✓";
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: #4ade80;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            font-size: 0.8rem;
+            color: white;
+        }
+
+        .module-content {
+            display: none;
+            background: #2d2d2d;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .module-content.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .module-header {
+            margin-bottom: 40px;
+            padding: 35px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-radius: 15px;
+            border-left: 5px solid #ff6b00;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.1);
+        }
+
+        .module-header h2 {
+            color: #ff6b00;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            font-weight: 800;
+        }
+
+        .module-header .welcome-text {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: #e0e0e0;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .module-header .description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #cccccc;
+            padding: 25px;
+            background: rgba(255, 107, 0, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid #ff6b00;
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .video-card {
+            position: relative;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .video-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(255, 107, 0, 0.3);
+            border-color: #ff6b00;
+        }
+
+        .video-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 107, 0, 0.1) 0%, transparent 50%);
+            animation: pulse 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .video-card-content {
+            padding: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .video-badge {
+            display: inline-block;
+            background: #ff6b00;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+
+        .play-button-container {
+            width: 80px;
+            height: 80px;
+            margin: 30px auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pulse-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid #ff6b00;
+            animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        .pulse-ring:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes ping {
+            75%, 100% {
+                transform: scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8533 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(255, 107, 0, 0.4);
+            position: relative;
+            z-index: 2;
+        }
+
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-left: 20px solid white;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            margin-left: 4px;
+        }
+
+        .video-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .video-description {
+            font-size: 0.9rem;
+            color: #aaaaaa;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .video-hint {
+            text-align: center;
+            padding: 12px;
+            background: rgba(255, 107, 0, 0.1);
+            border-radius: 10px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .video-hint span {
+            font-size: 0.85rem;
+            color: #ff6b00;
+            font-weight: 600;
+        }
+
+        .learning-path {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8533 100%);
+            border-radius: 15px;
+            padding: 35px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 30px rgba(255, 107, 0, 0.25);
+        }
+
+        .learning-path h3 {
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 800;
+        }
+
+        .learning-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .learning-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .learning-card-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .learning-card h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .learning-card p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .checklist-section {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .checklist-section h3 {
+            font-size: 1.4rem;
+            color: #ff6b00;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checklist-section h3::before {
+            content: "✓";
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: #ff6b00;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-size: 0.9rem;
+        }
+
+        .checklist-items {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #2d2d2d;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .checklist-item:hover {
+            border-color: #ff6b00;
+            transform: translateX(5px);
+        }
+
+        .checklist-item.checked {
+            background: rgba(255, 107, 0, 0.1);
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #666666;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item.checked .checkbox {
+            background: #ff6b00;
+            border-color: #ff6b00;
+        }
+
+        .checklist-item.checked .checkbox::after {
+            content: "✓";
+            color: white;
+            font-weight: bold;
+        }
+
+        .checklist-item span {
+            font-size: 1rem;
+            color: #cccccc;
+        }
+
+        .checklist-item.checked span {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .complete-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(90deg, #ff6b00 0%, #ff8533 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 107, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .complete-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 107, 0, 0.4);
+        }
+
+        .complete-button:disabled {
+            background: #4ade80;
+            cursor: not-allowed;
+        }
+
+        .complete-button:disabled::before {
+            content: "✓";
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: white;
+            color: #4ade80;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-weight: bold;
+        }
+
+        .completion-section {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8533 100%);
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(255, 107, 0, 0.4);
+            animation: slideUp 0.6s ease-out;
+            margin-top: 40px;
+        }
+
+        .completion-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(5deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .completion-section h2 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .completion-section p {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+        }
+
+        .completion-section .subtitle {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .tabs-container {
+                flex-direction: column;
+            }
+
+            .tab {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .module-content {
+                padding: 20px;
+            }
+
+            .videos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .learning-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="badge">UNIVERSIDADE CORPORATIVA CR</div>
+            <h1>BEM-VINDO AO DNA CR</h1>
+            <p>Sua jornada de excelência no mercado imobiliário começa aqui</p>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section">
+            <div class="progress-header">
+                <span>Seu Progresso</span>
+                <span id="progress-percentage">0%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container" id="tabs-container"></div>
+
+        <!-- Module Content -->
+        <div id="modules-container"></div>
+    </div>
+
+    <script>
+        const modules = [
+            {
+                id: 'boasvindas',
+                title: 'Boas-vindas à Crédito Real',
+                videos: [
+                    {
+                        title: 'Mensagem de Boas-vindas',
+                        description: 'Keli dá as boas-vindas à Universidade Corporativa CR',
+                        url: 'https://www.youtube.com/watch?v=EXAMPLE1',
+                        badge: 'VÍDEO ESSENCIAL'
+                    },
+                    {
+                        title: 'Institucional Crédito Real',
+                        description: 'Nossa história, números e posicionamento no mercado',
+                        url: 'https://www.youtube.com/watch?v=EXAMPLE2',
+                        badge: 'VÍDEO ESSENCIAL'
+                    }
+                ],
+                learningPath: [
+                    {
+                        icon: '🏢',
+                        title: 'Conceitos Fundamentais',
+                        description: 'Fluxo completo da locação, Lei do Inquilinato, estrutura de setores e fundamentos operacionais'
+                    },
+                    {
+                        icon: '🎯',
+                        title: 'Captação Estratégica',
+                        description: 'Estratégias de captação, scripts de abordagem, documentação e gestão de estoque de imóveis'
+                    },
+                    {
+                        icon: '💼',
+                        title: 'Atendimento de Excelência',
+                        description: 'Scripts de atendimento, técnicas de negociação, fidelização e organização de rotina produtiva'
+                    },
+                    {
+                        icon: '⚙️',
+                        title: 'Domínio de Sistemas',
+                        description: 'Salesforce, Power Loc, Chatwoot e todo ecossistema de IAs que potencializam sua produtividade'
+                    },
+                    {
+                        icon: '🔐',
+                        title: 'Processos Operacionais',
+                        description: 'Garantias locatícias, análise de crédito, vistorias, chaves e todos os procedimentos padronizados'
+                    },
+                    {
+                        icon: '📊',
+                        title: 'Gestão Estratégica',
+                        description: 'Indicadores, painéis gerenciais, planejamento estratégico e gestão de equipe de alta performance'
+                    }
+                ],
+                checklist: [
+                    'Compreendi a história e missão da Crédito Real Imóveis',
+                    'Entendi o modelo de franquias e como funciona a rede',
+                    'Reconheço a importância estratégica da área de locações',
+                    'Estou motivado(a) para fazer parte desta equipe'
+                ]
+            }
+        ];
+
+        let completedModules = new Set();
+        let checkedItems = {};
+        let currentModuleIndex = 0;
+
+        function initializeTabs() {
+            const tabsContainer = document.getElementById('tabs-container');
+            modules.forEach((module, index) => {
+                const tab = document.createElement('div');
+                tab.className = 'tab';
+                tab.id = `tab-${index}`;
+                tab.textContent = module.title;
+                tab.onclick = () => switchModule(index);
+                tabsContainer.appendChild(tab);
+            });
+        }
+
+        function initializeModules() {
+            const modulesContainer = document.getElementById('modules-container');
+            
+            modules.forEach((module, index) => {
+                const moduleDiv = document.createElement('div');
+                moduleDiv.className = 'module-content';
+                moduleDiv.id = `module-${index}`;
+                
+                let html = `
+                    <div class="module-header">
+                        <h2>${module.title}</h2>
+                        <p class="welcome-text">
+                            Olá, franqueados e corretores! É com imenso prazer e entusiasmo que recebemos você no time de locação da <strong style="color: #ff6b00;">Crédito Real Imóveis</strong> – uma rede com mais de <strong style="color: #ff6b00;">90 anos de tradição, credibilidade e inovação</strong> no mercado imobiliário brasileiro.
+                        </p>
+                        <p class="description">
+                            Você agora faz parte de uma família que valoriza a excelência, o profissionalismo e o crescimento contínuo. Estamos aqui para apoiar sua jornada rumo ao sucesso, compartilhando conhecimento, ferramentas e toda a expertise que construímos ao longo de décadas. Seja muito bem-vindo(a) – juntos, vamos alcançar grandes resultados! 🚀
+                        </p>
+                    </div>
+                `;
+
+                // Videos
+                if (module.videos && module.videos.length > 0) {
+                    html += '<div class="videos-grid">';
+                    module.videos.forEach((video, vIndex) => {
+                        html += `
+                            <a href="${video.url}" target="_blank" class="video-card" style="text-decoration: none; color: inherit;">
+                                <div class="video-card-content">
+                                    <div class="video-badge">${video.badge}</div>
+                                    <div class="play-button-container">
+                                        <div class="pulse-ring"></div>
+                                        <div class="pulse-ring"></div>
+                                        <div class="play-button">
+                                            <div class="play-icon"></div>
+                                        </div>
+                                    </div>
+                                    <h3 class="video-title">${video.title}</h3>
+                                    <p class="video-description">${video.description}</p>
+                                    <div class="video-hint">
+                                        <span>▶ Clique para assistir agora</span>
+                                    </div>
+                                </div>
+                            </a>
+                        `;
+                    });
+                    html += '</div>';
+                }
+
+                // Learning Path
+                if (module.learningPath && module.learningPath.length > 0) {
+                    html += `
+                        <div class="learning-path">
+                            <h3>🎯 O que você aprenderá nesta Trilha de Capacitação Comercial</h3>
+                            <div class="learning-grid">
+                    `;
+                    module.learningPath.forEach(item => {
+                        html += `
+                            <div class="learning-card">
+                                <div class="learning-card-icon">${item.icon}</div>
+                                <h4>${item.title}</h4>
+                                <p>${item.description}</p>
+                            </div>
+                        `;
+                    });
+                    html += '</div></div>';
+                }
+
+                // Checklist
+                if (module.checklist && module.checklist.length > 0) {
+                    html += `
+                        <div class="checklist-section">
+                            <h3>Checklist de Aprendizado</h3>
+                            <div class="checklist-items">
+                    `;
+                    module.checklist.forEach((item, cIndex) => {
+                        const itemId = `${module.id}-check-${cIndex}`;
+                        html += `
+                            <div class="checklist-item" id="${itemId}" onclick="toggleChecklistItem('${itemId}')">
+                                <div class="checkbox"></div>
+                                <span>${item}</span>
+                            </div>
+                        `;
+                    });
+                    html += '</div></div>';
+                }
+
+                // Complete Button
+                html += `
+                    <button class="complete-button" id="complete-btn-${index}" onclick="completeModule(${index})">
+                        Marcar como Concluído
+                    </button>
+                `;
+
+                moduleDiv.innerHTML = html;
+                modulesContainer.appendChild(moduleDiv);
+            });
+        }
+
+        function switchModule(index) {
+            currentModuleIndex = index;
+            
+            // Update tabs
+            document.querySelectorAll('.tab').forEach((tab, i) => {
+                tab.classList.toggle('active', i === index);
+            });
+            
+            // Update modules
+            document.querySelectorAll('.module-content').forEach((content, i) => {
+                content.classList.toggle('active', i === index);
+            });
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleChecklistItem(itemId) {
+            const item = document.getElementById(itemId);
+            item.classList.toggle('checked');
+            checkedItems[itemId] = item.classList.contains('checked');
+        }
+
+        function completeModule(index) {
+            completedModules.add(index);
+            
+            const btn = document.getElementById(`complete-btn-${index}`);
+            btn.disabled = true;
+            btn.textContent = 'Módulo Concluído';
+            
+            const tab = document.getElementById(`tab-${index}`);
+            tab.classList.add('completed');
+            
+            updateProgress();
+            
+            // Show completion if all done
+            if (completedModules.size === modules.length) {
+                showCompletion();
+            }
+        }
+
+        function updateProgress() {
+            const progress = (completedModules.size / modules.length) * 100;
+            document.getElementById('progress-bar').style.width = progress + '%';
+            document.getElementById('progress-percentage').textContent = Math.round(progress) + '%';
+        }
+
+        function showCompletion() {
+            const container = document.getElementById('modules-container');
+            const completionHTML = `
+                <div class="completion-section">
+                    <div class="completion-icon">🏆</div>
+                    <h2>Parabéns!</h2>
+                    <p>Você concluiu o treinamento DNA CR</p>
+                    <p class="subtitle">Agora você está pronto para fazer parte da família Crédito Real Imóveis!</p>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', completionHTML);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeTabs();
+            initializeModules();
+            switchModule(0);
+        });
+    </script>
+</body>
+</html>

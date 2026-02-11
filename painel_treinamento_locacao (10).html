@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinamento - Fundamentos de Locação | Crédito Real Imóveis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            padding: 30px;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(255, 107, 0, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .progress-container {
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .progress-header h3 {
+            color: #ff6b00;
+            font-size: 1.2em;
+        }
+
+        .progress-percentage {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ff6b00;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background: #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b00 0%, #ff8c00 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.5);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 200px;
+            padding: 18px 25px;
+            background: #2d2d2d;
+            border: 2px solid #3d3d3d;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .tab:hover {
+            background: #3d3d3d;
+            border-color: #ff6b00;
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            border-color: #ff6b00;
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.4);
+        }
+
+        .tab.completed::after {
+            content: "✓";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            color: #4CAF50;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .content {
+            display: none;
+            background: #2d2d2d;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.4s ease;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content h2 {
+            color: #ff6b00;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #ff6b00;
+            padding-bottom: 10px;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-card {
+            margin-bottom: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .video-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 107, 0, 0.4);
+            border-color: #ff6b00;
+        }
+
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .video-thumbnail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 50%, rgba(255, 107, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(255, 140, 0, 0.1) 0%, transparent 50%);
+            animation: backgroundPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        .play-icon-wrapper {
+            position: relative;
+            z-index: 3;
+        }
+
+        .play-icon {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            color: white;
+            padding-left: 5px;
+            box-shadow: 0 8px 30px rgba(255, 107, 0, 0.6);
+            transition: all 0.3s ease;
+            z-index: 3;
+        }
+
+        .video-card:hover .play-icon {
+            transform: scale(1.15);
+            box-shadow: 0 12px 40px rgba(255, 107, 0, 0.8);
+        }
+
+        .pulse-ring, .pulse-ring-2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90px;
+            height: 90px;
+            border: 3px solid #ff6b00;
+            border-radius: 50%;
+            animation: pulse 2s ease-out infinite;
+            z-index: 2;
+        }
+
+        .pulse-ring-2 {
+            animation-delay: 1s;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+        }
+
+        .video-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 70%, transparent 100%);
+            padding: 25px 20px 15px;
+            z-index: 2;
+        }
+
+        .video-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            box-shadow: 0 3px 10px rgba(255, 107, 0, 0.4);
+        }
+
+        .video-overlay h3 {
+            font-size: 1.4em;
+            margin-bottom: 8px;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .video-overlay p {
+            font-size: 0.95em;
+            color: #cccccc;
+            margin: 0;
+        }
+
+        .click-hint {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 107, 0, 0.95);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.85em;
+            font-weight: 600;
+            animation: bounce 2s ease-in-out infinite;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.5);
+            z-index: 3;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .video-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1a1a1a;
+            padding: 15px 20px;
+            border-top: 2px solid #ff6b00;
+        }
+
+        .video-status {
+            font-size: 0.9em;
+            color: #cccccc;
+            font-weight: 500;
+        }
+
+        .video-action {
+            font-size: 1em;
+            color: #ff6b00;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .video-card:hover .video-action {
+            color: #ff8c00;
+            transform: translateX(5px);
+        }
+
+        .video-button {
+            display: block;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            color: white;
+            padding: 18px 30px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .video-button:hover {
+            background: linear-gradient(135deg, #ff8c00 0%, #ffa500 100%);
+            box-shadow: inset 0 -3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .resource-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(255, 107, 0, 0.3);
+        }
+
+        .resource-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 107, 0, 0.5);
+        }
+
+        .resource-link::before {
+            content: "📄 ";
+        }
+
+        .section-description {
+            background: #1a1a1a;
+            padding: 20px;
+            border-left: 4px solid #ff6b00;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            font-size: 1.05em;
+        }
+
+        .mark-complete {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 600;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .mark-complete:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.5);
+        }
+
+        .mark-complete:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .nav-button {
+            background: #3d3d3d;
+            color: white;
+            border: 2px solid #ff6b00;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            background: #ff6b00;
+            transform: translateX(5px);
+        }
+
+        .nav-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            border-color: #666;
+        }
+
+        .checklist {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .checklist h3 {
+            color: #ff6b00;
+            margin-bottom: 15px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 8px 0;
+            background: #2d2d2d;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            background: #3d3d3d;
+        }
+
+        .checklist-item.completed {
+            opacity: 0.7;
+            text-decoration: line-through;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                min-width: 100%;
+            }
+
+            header h1 {
+                font-size: 1.6em;
+            }
+
+            .navigation-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* Seção de Finalização e Certificado */
+        .completion-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 3px solid #ff6b00;
+        }
+
+        .training-completed-banner {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+            animation: slideIn 0.6s ease;
+            border: 3px solid #66BB6A;
+        }
+
+        .completed-icon {
+            font-size: 5em;
+            margin-right: 25px;
+            animation: checkmarkPop 0.6s ease;
+        }
+
+        @keyframes checkmarkPop {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .completed-content h3 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            color: white;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .completed-subtitle {
+            font-size: 1.15em;
+            font-weight: 500;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .certificate-banner {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(255, 107, 0, 0.4);
+            animation: slideIn 0.6s ease;
+            animation-delay: 0.2s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .certificate-icon {
+            font-size: 4em;
+            margin-right: 20px;
+            animation: rotate 3s ease-in-out infinite;
+        }
+
+        @keyframes rotate {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .certificate-content h3 {
+            font-size: 1.6em;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .highlight-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .evaluation-card {
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #ff6b00;
+            margin-bottom: 25px;
+        }
+
+        .evaluation-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .evaluation-badge {
+            display: inline-block;
+            background: #ff6b00;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.85em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .evaluation-header h4 {
+            font-size: 1.8em;
+            color: #ff6b00;
+            margin: 0;
+        }
+
+        .evaluation-requirements {
+            margin: 30px 0;
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: flex-start;
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ff6b00;
+            transition: all 0.3s ease;
+        }
+
+        .requirement-item:hover {
+            background: #3d3d3d;
+            transform: translateX(5px);
+        }
+
+        .requirement-item .icon {
+            font-size: 2em;
+            margin-right: 20px;
+            min-width: 40px;
+        }
+
+        .requirement-item strong {
+            color: #ff6b00;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .requirement-item p {
+            margin: 0;
+            color: #cccccc;
+            line-height: 1.6;
+        }
+
+        .evaluation-cta {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .cta-text {
+            margin-bottom: 25px;
+        }
+
+        .cta-text p {
+            color: #ff6b00;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .cta-text ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .cta-text li {
+            padding: 8px 0;
+            font-size: 1.05em;
+            color: #cccccc;
+        }
+
+        .evaluation-button {
+            display: block;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.3em;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+            border: none;
+            cursor: pointer;
+        }
+
+        .evaluation-button:hover {
+            background: linear-gradient(135deg, #45a049 0%, #388e3c 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.6);
+        }
+
+        .success-footer {
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4CAF50;
+            text-align: center;
+        }
+
+        .success-footer p {
+            margin: 0;
+            font-size: 1.05em;
+            color: #cccccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏠 Fundamentos de Locação</h1>
+            <p>Treinamento Comercial | Crédito Real Imóveis</p>
+        </header>
+
+        <div class="progress-container">
+            <div class="progress-header">
+                <h3>📊 Seu Progresso no Treinamento</h3>
+                <span class="progress-percentage">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="conceitos">
+                <strong>Módulo 1: Conceitos Básicos</strong><br>
+                <small>Fundamentos da locação</small>
+            </div>
+            <div class="tab" data-tab="estrutura">
+                <strong>Módulo 2: Estrutura de Setores</strong><br>
+                <small>Organização operacional</small>
+            </div>
+        </div>
+
+        <div class="content active" data-content="conceitos">
+            <h2>📚 Módulo 1: Conceitos Básicos de Locação</h2>
+            
+            <div class="section-description">
+                <strong>Sobre este módulo:</strong> Nesta seção, você aprenderá os fundamentos essenciais do mercado de locação imobiliária, compreendendo os conceitos-chave, legislação aplicável e práticas recomendadas para uma atuação profissional e segura.
+            </div>
+
+            <div class="video-card" onclick="window.open('https://vimeo.com/1161900350', '_blank')">
+                <div class="video-thumbnail">
+                    <div class="play-icon-wrapper">
+                        <div class="play-icon">▶</div>
+                        <div class="pulse-ring"></div>
+                        <div class="pulse-ring-2"></div>
+                    </div>
+                    <div class="video-overlay">
+                        <div class="video-badge">📹 VÍDEO ESSENCIAL</div>
+                        <h3>Módulo 1: Conceitos Básicos de Locação</h3>
+                    </div>
+                    <div class="click-hint">👆 Clique para assistir agora</div>
+                </div>
+                <div class="video-footer">
+                    <span class="video-status">🎯 Fundamental para o certificado</span>
+                    <span class="video-action">ASSISTIR AGORA ➜</span>
+                </div>
+            </div>
+
+            <div class="checklist">
+                <h3>✅ Checklist de Aprendizado</h3>
+                <label class="checklist-item">
+                    <input type="checkbox" class="module-checkbox" data-module="conceitos" data-item="1">
+                    <span>Assisti ao vídeo completo sobre conceitos básicos</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" class="module-checkbox" data-module="conceitos" data-item="2">
+                    <span>Compreendi os principais termos técnicos da locação</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" class="module-checkbox" data-module="conceitos" data-item="3">
+                    <span>Consultei a Lei do Inquilinato para referência</span>
+                </label>
+            </div>
+
+            <a href="https://www.planalto.gov.br/ccivil_03/leis/l8245.htm" 
+               target="_blank" 
+               class="resource-link">
+               Consultar Lei do Inquilinato (Lei nº 8.245/1991)
+            </a>
+
+            <button class="mark-complete" data-section="conceitos">
+                ✓ Marcar Módulo como Concluído
+            </button>
+
+            <div class="navigation-buttons">
+                <button class="nav-button" disabled>← Módulo Anterior</button>
+                <button class="nav-button" data-next="estrutura">Próximo Módulo →</button>
+            </div>
+        </div>
+
+        <div class="content" data-content="estrutura">
+            <h2>🏢 Módulo 2: Estrutura de Setores da Locação</h2>
+            
+            <div class="section-description">
+                <strong>Sobre este módulo:</strong> Conheça a organização operacional do setor de locação, compreendendo as diferentes áreas, responsabilidades e fluxos de trabalho que garantem eficiência e qualidade no atendimento ao cliente.
+            </div>
+
+            <div class="video-card" onclick="window.open('https://vimeo.com/1161900350', '_blank')">
+                <div class="video-thumbnail">
+                    <div class="play-icon-wrapper">
+                        <div class="play-icon">▶</div>
+                        <div class="pulse-ring"></div>
+                        <div class="pulse-ring-2"></div>
+                    </div>
+                    <div class="video-overlay">
+                        <div class="video-badge">📹 VÍDEO ESSENCIAL</div>
+                        <h3>Módulo 2: Estrutura de Setores da Locação</h3>
+                    </div>
+                    <div class="click-hint">👆 Clique para assistir agora</div>
+                </div>
+                <div class="video-footer">
+                    <span class="video-status">🎯 Fundamental para o certificado</span>
+                    <span class="video-action">ASSISTIR AGORA ➜</span>
+                </div>
+            </div>
+
+            <div class="checklist">
+                <h3>✅ Checklist de Aprendizado</h3>
+                <label class="checklist-item">
+                    <input type="checkbox" class="module-checkbox" data-module="estrutura" data-item="1">
+                    <span>Assisti ao vídeo completo sobre estrutura de setores</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" class="module-checkbox" data-module="estrutura" data-item="2">
+                    <span>Identifiquei os principais setores da operação de locação</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" class="module-checkbox" data-module="estrutura" data-item="3">
+                    <span>Compreendi o fluxo de trabalho entre os setores</span>
+                </label>
+            </div>
+
+            <button class="mark-complete" data-section="estrutura">
+                ✓ Marcar Módulo como Concluído
+            </button>
+
+            <div class="completion-section">
+                <div class="training-completed-banner">
+                    <div class="completed-icon">✅</div>
+                    <div class="completed-content">
+                        <h3>🎉 CURSO CONCLUÍDO COM SUCESSO!</h3>
+                        <p class="completed-subtitle">Você assistiu todos os módulos e está preparado para a próxima etapa</p>
+                    </div>
+                </div>
+
+                <div class="certificate-banner">
+                    <div class="certificate-icon">🎓</div>
+                    <div class="certificate-content">
+                        <h3>Agora falta apenas um passo para conquistar seu certificado!</h3>
+                        <p class="highlight-text">Realize a avaliação final e comprove seu conhecimento</p>
+                    </div>
+                </div>
+
+                <div class="evaluation-card">
+                    <div class="evaluation-header">
+                        <span class="evaluation-badge">PRÓXIMO PASSO OBRIGATÓRIO</span>
+                        <h4>📝 Realize a Avaliação Final</h4>
+                    </div>
+                    
+                    <div class="evaluation-requirements">
+                        <div class="requirement-item">
+                            <span class="icon">✅</span>
+                            <div>
+                                <strong>Pontuação Mínima:</strong>
+                                <p>É necessário atingir 70% de acertos para ser aprovado</p>
+                            </div>
+                        </div>
+                        <div class="requirement-item">
+                            <span class="icon">📍</span>
+                            <div>
+                                <strong>Onde fazer:</strong>
+                                <p>Acesse a Universidade Corporativa dentro do curso</p>
+                            </div>
+                        </div>
+                        <div class="requirement-item">
+                            <span class="icon">⚠️</span>
+                            <div>
+                                <strong>Importante:</strong>
+                                <p>Sem a avaliação, você NÃO receberá o certificado</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="evaluation-cta">
+                        <div class="cta-text">
+                            <p><strong>🎯 O certificado é fundamental para:</strong></p>
+                            <ul>
+                                <li>✓ Comprovar sua capacitação profissional</li>
+                                <li>✓ Validar conhecimento na rede Crédito Real</li>
+                                <li>✓ Aumentar sua credibilidade com clientes</li>
+                                <li>✓ Avançar na carreira como corretor</li>
+                            </ul>
+                        </div>
+                        <a href="https://universidade.centraldofranqueado.com.br/f20c2c8b-5f94-4e2a-a164-1a32ae419065/meus-cursos/47b142fe-1afa-4938-b713-007a54c3db08/executar" target="_blank" class="evaluation-button">
+                            🚀 IR PARA A AVALIAÇÃO
+                        </a>
+                    </div>
+                </div>
+
+                <div class="success-footer">
+                    <p>💡 <strong>Dica:</strong> Revise os conteúdos dos vídeos antes de fazer a avaliação para garantir sua aprovação!</p>
+                </div>
+            </div>
+
+            <div class="navigation-buttons">
+                <button class="nav-button" data-prev="conceitos">← Módulo Anterior</button>
+                <button class="nav-button" disabled>Próximo Módulo →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sistema de Navegação por Abas
+        const tabs = document.querySelectorAll('.tab');
+        const contents = document.querySelectorAll('.content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.dataset.tab;
+                
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.querySelector(`[data-content="${targetTab}"]`).classList.add('active');
+            });
+        });
+
+        // Sistema de Progresso
+        let completedSections = new Set();
+        const totalSections = 2;
+
+        function updateProgress() {
+            const percentage = (completedSections.size / totalSections) * 100;
+            document.querySelector('.progress-fill').style.width = percentage + '%';
+            document.querySelector('.progress-percentage').textContent = Math.round(percentage) + '%';
+            
+            completedSections.forEach(section => {
+                const tab = document.querySelector(`[data-tab="${section}"]`);
+                if (tab) tab.classList.add('completed');
+            });
+        }
+
+        // Botões de Marcar como Concluído
+        document.querySelectorAll('.mark-complete').forEach(button => {
+            const section = button.dataset.section;
+            
+            button.addEventListener('click', () => {
+                completedSections.add(section);
+                button.textContent = '✓ Módulo Concluído';
+                button.disabled = true;
+                updateProgress();
+            });
+        });
+
+        // Sistema de Checklist
+        document.querySelectorAll('.module-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    checkbox.closest('.checklist-item').classList.add('completed');
+                } else {
+                    checkbox.closest('.checklist-item').classList.remove('completed');
+                }
+            });
+        });
+
+        // Botões de Navegação
+        document.querySelectorAll('.nav-button[data-next]').forEach(button => {
+            button.addEventListener('click', () => {
+                const nextTab = button.dataset.next;
+                const tab = document.querySelector(`[data-tab="${nextTab}"]`);
+                if (tab) tab.click();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        document.querySelectorAll('.nav-button[data-prev]').forEach(button => {
+            button.addEventListener('click', () => {
+                const prevTab = button.dataset.prev;
+                const tab = document.querySelector(`[data-tab="${prevTab}"]`);
+                if (tab) tab.click();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Inicializar progresso
+        updateProgress();
+    </script>
+</body>
+</html>
