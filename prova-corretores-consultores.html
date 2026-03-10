@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova — Corretores Consultores | Crédito Real</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --orange: #ff6b00; --black: #0d0d0d; --dark: #1a1a1a; --card: #212121;
+            --border: #2e2e2e; --text: #e8e8e8; --muted: #888; --correct: #00c853; --wrong: #e53935;
+        }
+        body { background: var(--black); color: var(--text); font-family: 'Barlow', sans-serif; min-height: 100vh; }
+        header { background: #1a1a1a; border-bottom: 3px solid var(--orange); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+        .header-left h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.6rem; font-weight: 800; color: #fff; }
+        .header-left h1 span { color: var(--orange); }
+        .header-left p { color: var(--muted); font-size: 0.82rem; margin-top: 2px; }
+        .progress-pill { background: var(--card); border: 1px solid var(--border); border-radius: 50px; padding: 9px 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; color: var(--orange); }
+        #intro { max-width: 660px; margin: 56px auto; padding: 0 24px; text-align: center; }
+        .badge { display: inline-block; background: var(--orange); color: #fff; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.78rem; letter-spacing: 2px; padding: 5px 14px; border-radius: 4px; margin-bottom: 18px; text-transform: uppercase; }
+        #intro h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 2.6rem; font-weight: 800; line-height: 1.1; margin-bottom: 14px; }
+        #intro p { color: var(--muted); line-height: 1.7; font-size: 0.97rem; margin-bottom: 10px; }
+        .rules { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 22px 26px; margin: 24px 0; text-align: left; }
+        .rules h3 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.95rem; letter-spacing: 1px; color: var(--orange); margin-bottom: 12px; text-transform: uppercase; }
+        .rules ul { list-style: none; }
+        .rules ul li { font-size: 0.93rem; color: #bbb; padding: 4px 0 4px 20px; position: relative; }
+        .rules ul li::before { content: '→'; position: absolute; left: 0; color: var(--orange); font-weight: 700; }
+        #quiz { display: none; max-width: 820px; margin: 0 auto; padding: 36px 24px 100px; }
+        .question-block { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; margin-bottom: 20px; opacity: 0; transform: translateY(16px); animation: fadeUp 0.35s ease forwards; }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        .q-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px; }
+        .q-number { background: var(--orange); color: #fff; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 0.95rem; min-width: 36px; height: 36px; border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .q-topic { font-size: 0.7rem; font-weight: 600; letter-spacing: 1.5px; color: var(--orange); text-transform: uppercase; margin-bottom: 4px; }
+        .q-text { font-size: 1.02rem; font-weight: 500; line-height: 1.5; color: #fff; }
+        .options { display: flex; flex-direction: column; gap: 9px; }
+        .option { background: var(--dark); border: 2px solid var(--border); border-radius: 9px; padding: 13px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: border-color 0.18s, background 0.18s; font-size: 0.93rem; color: #ccc; user-select: none; }
+        .option:hover:not(.disabled) { border-color: var(--orange); background: #ff6b0015; color: #fff; }
+        .option.selected { border-color: var(--orange); background: #ff6b0015; color: #fff; }
+        .option.correct { border-color: var(--correct); background: #00c85315; color: #fff; }
+        .option.wrong { border-color: var(--wrong); background: #e5393515; color: #ccc; }
+        .option.disabled { cursor: default; }
+        .opt-letter { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 0.98rem; color: var(--orange); min-width: 20px; }
+        .option.correct .opt-letter { color: var(--correct); }
+        .option.wrong .opt-letter { color: var(--wrong); }
+        .feedback { display: none; margin-top: 12px; padding: 11px 15px; border-radius: 7px; font-size: 0.88rem; line-height: 1.5; }
+        .feedback.show { display: block; }
+        .feedback.correct-fb { background: #00c85315; border-left: 3px solid var(--correct); color: #a5d6a7; }
+        .feedback.wrong-fb { background: #e5393515; border-left: 3px solid var(--wrong); color: #ef9a9a; }
+        #result { display: none; max-width: 660px; margin: 0 auto; padding: 56px 24px 60px; text-align: center; }
+        .score-circle { width: 150px; height: 150px; border-radius: 50%; border: 5px solid var(--orange); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 26px; background: var(--card); }
+        .score-number { font-family: 'Barlow Condensed', sans-serif; font-size: 3rem; font-weight: 800; color: var(--orange); line-height: 1; }
+        .score-label { font-size: 0.78rem; color: var(--muted); margin-top: 3px; }
+        #result h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 10px; }
+        #result > p { color: var(--muted); line-height: 1.7; margin-bottom: 7px; }
+        .result-breakdown { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin: 26px 0; }
+        .breakdown-card { background: var(--card); border: 1px solid var(--border); border-radius: 11px; padding: 18px 12px; }
+        .breakdown-card .num { font-family: 'Barlow Condensed', sans-serif; font-size: 1.9rem; font-weight: 800; margin-bottom: 3px; }
+        .breakdown-card .lbl { font-size: 0.78rem; color: var(--muted); }
+        .breakdown-card.green .num { color: var(--correct); }
+        .breakdown-card.red .num { color: var(--wrong); }
+        .breakdown-card.orange .num { color: var(--orange); }
+        #cert-section { display: none; max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+        .cert-name-form { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 24px; text-align: center; }
+        .cert-name-form h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; }
+        .cert-name-form p { color: var(--muted); font-size: 0.9rem; margin-bottom: 18px; }
+        .cert-name-form input { width: 100%; max-width: 420px; background: var(--dark); border: 2px solid var(--border); border-radius: 8px; padding: 14px 18px; font-size: 1rem; color: #fff; font-family: 'Barlow', sans-serif; outline: none; transition: border-color 0.2s; }
+        .cert-name-form input:focus { border-color: var(--orange); }
+        .cert-name-form input::placeholder { color: var(--muted); }
+        #certificate { background: linear-gradient(145deg, #1a1a1a 0%, #141414 100%); border: 2px solid var(--orange); border-radius: 20px; padding: 52px 52px 44px; text-align: center; position: relative; overflow: hidden; }
+        #certificate::before { content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, #ff6b0018 0%, transparent 70%); pointer-events: none; }
+        #certificate::after { content: ''; position: absolute; bottom: -60px; left: -60px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, #ff6b0012 0%, transparent 70%); pointer-events: none; }
+        .cert-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1rem; letter-spacing: 3px; color: var(--orange); text-transform: uppercase; margin-bottom: 4px; }
+        .cert-subtitle { color: var(--muted); font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 30px; }
+        .cert-declares { color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
+        .cert-name { font-family: 'Barlow Condensed', sans-serif; font-size: 2.5rem; font-weight: 800; color: #fff; margin-bottom: 8px; line-height: 1.1; }
+        .cert-course-label { color: var(--muted); font-size: 0.86rem; margin-bottom: 6px; }
+        .cert-course { font-family: 'Barlow Condensed', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--orange); margin-bottom: 30px; }
+        .cert-divider { width: 70px; height: 3px; background: var(--orange); margin: 0 auto 26px; border-radius: 2px; }
+        .cert-meta { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; flex-wrap: wrap; }
+        .cert-meta-item { text-align: center; }
+        .cert-meta-item .val { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--orange); }
+        .cert-meta-item .key { font-size: 0.76rem; color: var(--muted); margin-top: 2px; }
+        .cert-footer { font-size: 0.76rem; color: #555; border-top: 1px solid var(--border); padding-top: 16px; }
+        .btn { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.05rem; padding: 15px 36px; border: none; border-radius: 9px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 18px rgba(255,107,0,0.28); }
+        .btn-primary { background: var(--orange); color: #fff; }
+        .btn-secondary { background: var(--card); border: 1px solid var(--border); color: var(--text); }
+        .btn-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+        .sticky-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--dark); border-top: 2px solid var(--border); padding: 13px 24px; display: flex; align-items: center; justify-content: space-between; z-index: 99; }
+        .answered-count { font-size: 0.88rem; color: var(--muted); }
+        .answered-count span { color: var(--orange); font-weight: 700; }
+        @media (max-width: 600px) {
+            header { padding: 14px 16px; flex-direction: column; gap: 10px; align-items: flex-start; }
+            .result-breakdown { grid-template-columns: 1fr 1fr; }
+            .question-block { padding: 18px; }
+            #certificate { padding: 32px 22px 28px; }
+            .cert-name { font-size: 1.9rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <h1>Prova — <span>Corretores Consultores</span></h1>
+        <p>Crédito Real Imóveis · Universidade CR</p>
+    </div>
+    <div class="progress-pill" id="headerProgress">0 / 20</div>
+</header>
+
+<div id="intro">
+    <div class="badge">Avaliação de Conhecimento</div>
+    <h2>Hora de colocar o<br>conhecimento à prova</h2>
+    <p>Esta prova avalia o domínio sobre os principais módulos do treinamento de Corretores Consultores. As questões são baseadas nos vídeos e materiais do curso.</p>
+    <div class="rules">
+        <h3>Instruções</h3>
+        <ul>
+            <li>20 questões objetivas — uma alternativa correta por questão</li>
+            <li>Após selecionar, a resposta é registrada automaticamente</li>
+            <li>Gabarito com feedback é exibido após o envio</li>
+            <li>Aprovação: mínimo de 14 acertos (70%)</li>
+            <li>Aprovados geram certificado de conclusão personalizado</li>
+            <li>Temas: Salesforce, Chatwoot, Garantias (Aluga Fácil, Pode Locar, Loft, Alpop, Fiador, Carta Fiança, Caução), Vistorias e Posses, Procedimento Comercial</li>
+        </ul>
+    </div>
+    <button class="btn btn-primary" onclick="startQuiz()">Iniciar Prova →</button>
+</div>
+
+<div id="quiz"></div>
+
+<div id="result">
+    <div class="score-circle">
+        <div class="score-number" id="scoreNum">0</div>
+        <div class="score-label">de 20 acertos</div>
+    </div>
+    <h2 id="resultTitle">—</h2>
+    <p id="resultMsg">—</p>
+    <div class="result-breakdown">
+        <div class="breakdown-card green"><div class="num" id="resCorrect">0</div><div class="lbl">Acertos</div></div>
+        <div class="breakdown-card red"><div class="num" id="resWrong">0</div><div class="lbl">Erros</div></div>
+        <div class="breakdown-card orange"><div class="num" id="resPct">0%</div><div class="lbl">Aproveitamento</div></div>
+    </div>
+    <p style="font-size:0.83rem;color:var(--muted);">As respostas corretas estão destacadas em verde nas questões acima.</p>
+    <div class="btn-row" id="resultBtns"></div>
+</div>
+
+<div id="cert-section">
+    <div class="cert-name-form" id="certForm">
+        <h3>🎉 Parabéns — você foi aprovado!</h3>
+        <p>Digite seu nome completo para gerar o seu certificado de conclusão.</p>
+        <input type="text" id="certNameInput" placeholder="Seu nome completo" maxlength="60">
+        <div class="btn-row">
+            <button class="btn btn-primary" onclick="generateCert()">Gerar Certificado 🎓</button>
+        </div>
+    </div>
+
+    <div id="certificate" style="display:none;">
+        <div class="cert-brand">Crédito Real Imóveis</div>
+        <div class="cert-subtitle">UNIVERSIDADE CR &nbsp;·&nbsp; CERTIFICADO DE CONCLUSÃO</div>
+        <div class="cert-declares">Certificamos que</div>
+        <div class="cert-name" id="certName">—</div>
+        <div class="cert-course-label">concluiu com aprovação o treinamento</div>
+        <div class="cert-course">Corretores Consultores — Módulo de Locação</div>
+        <div class="cert-divider"></div>
+        <div class="cert-meta">
+            <div class="cert-meta-item"><div class="val" id="certScore">—</div><div class="key">Acertos</div></div>
+            <div class="cert-meta-item"><div class="val" id="certPct">—</div><div class="key">Aproveitamento</div></div>
+            <div class="cert-meta-item"><div class="val" id="certDate">—</div><div class="key">Data de conclusão</div></div>
+        </div>
+        <div class="cert-footer">Crédito Real Imóveis &nbsp;·&nbsp; Universidade CR &nbsp;·&nbsp; creditoreal.com.br</div>
+    </div>
+
+    <div class="btn-row" id="certBtns" style="display:none; flex-direction: column; align-items: center;">
+        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+            <button class="btn btn-primary" onclick="copyCertAsImage()" id="copyBtn">🖼️ Ver e Baixar Certificado</button>
+            <button class="btn btn-secondary" onclick="reviewAnswers()">Revisar Gabarito</button>
+            <button class="btn btn-secondary" onclick="restartQuiz()">Refazer Prova</button>
+        </div>
+        <p id="copyHint" style="font-size:0.82rem;color:var(--muted);margin-top:12px;">🖼️ Abre em nova aba — clique com botão direito para copiar ou use o botão de download.</p>
+    </div>
+
+    <div id="certImageContainer" style="display:none; text-align:center; margin-top:24px; padding: 0 24px 60px;"></div>
+</div>
+
+<div class="sticky-bar" id="stickyBar" style="display:none;">
+    <div class="answered-count">Respondidas: <span id="answeredCount">0</span> de 20</div>
+    <button class="btn btn-primary" onclick="submitQuiz()">Enviar Prova</button>
+</div>
+
+<script>
+const questions = [
+    // SALESFORCE (4)
+    {topic:'Salesforce · CRM Comercial',text:'Qual é a função central do Painel do Corretor no Salesforce?',options:['Gerenciar publicações de imóveis em portais externos como ZAP e Viva Real','Visualizar e gerenciar todos os leads, tarefas pendentes e etapas das locações em andamento','Emitir boletos de aluguel diretamente para os inquilinos','Registrar histórico de comissões e repasses financeiros do corretor'],correct:1,feedback:'O Painel do Corretor é o ponto central de gestão: nele o corretor acompanha leads, tarefas e todas as locações em andamento.'},
+
+    {topic:'Salesforce · CRM Comercial',text:'Na Fase Visita do Salesforce, quais ações o corretor deve executar?',options:['Registrar a proposta formal, coletar documentos e aguardar aprovação do cadastro','Solicitar a separação das chaves, verificar necessidade de visita acompanhada, registrar a visita na LOC e reportar a visita','Enviar o contrato para assinatura digital e agendar a posse','Criar o CAD do inquilino e incluir a FCAD no cadastro principal'],correct:1,feedback:'Na Fase Visita: solicitar a separação das chaves, verificar se a visita precisa ser acompanhada, registrar a visita na LOC e reportar corretamente no sistema.'},
+
+    {topic:'Salesforce · CRM Comercial',text:'Qual a diferença entre um CAD e uma FCAD no Salesforce?',options:['CAD é o contrato de locação; FCAD é a ficha de vistoria do imóvel','CAD é o cadastro principal do inquilino; FCAD é uma ficha complementar incluída quando há segundo locatário ou avalista','CAD é exclusivo para locações residenciais; FCAD para comerciais','CAD é emitido pelo corretor; FCAD é gerada automaticamente pelo sistema após aprovação'],correct:1,feedback:'O CAD é o cadastro principal. A FCAD (Ficha Complementar de Cadastro) é adicionada ao CAD quando é necessário incluir um segundo locatário, dependente ou avalista.'},
+
+    {topic:'Atendimento ao Cliente',text:'Quais são boas práticas essenciais no atendimento ao cliente como corretor consultor?',options:['Aguardar o cliente enviar mensagem primeiro antes de fazer qualquer contato, para não parecer invasivo','Responder rapidamente, criar conexão desde o primeiro contato, utilizar ligação e áudios para humanizar o atendimento e fazer retorno ativo sempre','Priorizar comunicação exclusivamente por texto escrito para manter registro formal de todas as tratativas','Realizar o primeiro contato apenas após confirmar que o imóvel está disponível no Salesforce'],correct:1,feedback:'Boas práticas de atendimento incluem: abordagem rápida, retorno ativo, criação de conexão genuína com o cliente e uso de ligação e áudios — que humanizam o contato e aumentam a taxa de conversão.'},
+
+    // CHATWOOT (2)
+    {topic:'Chatwoot · Atendimento',text:'Qual o risco direto de o corretor não responder rapidamente um lead recebido pelo Chatwoot?',options:['O sistema bloqueia o acesso ao Salesforce por inatividade','O corretor recebe apenas um aviso informal do coordenador, sem impacto no lead','O cliente, com alta intenção de fechar, pode ser captado pela concorrência ou perder o interesse','O coordenador da franquia recebe notificação de penalidade financeira'],correct:2,feedback:'Leads no Chatwoot são clientes quentes. Demora na resposta significa perder o negócio para a concorrência ou o cliente desistir.'},
+
+    {topic:'Chatwoot · Atendimento',text:'Como o corretor deve tratar o acesso ao Chatwoot durante o horário de trabalho?',options:['Acessar apenas quando receber notificação por e-mail de novo lead','Verificar a plataforma uma vez ao dia, no início do expediente, e deixar aberta em segundo plano','Permanecer sempre logado e com atenção ativa, pois os leads chegam em tempo real e a velocidade de resposta é decisiva','Acessar somente após concluir todas as tarefas pendentes no Salesforce'],correct:2,feedback:'O Chatwoot exige presença ativa e contínua. Leads chegam em tempo real — estar logado e responder rapidamente é o que diferencia o corretor que fecha do que perde a oportunidade.'},
+
+    // ALUGA FÁCIL (2)
+    {topic:'Garantias · Aluga Fácil',text:'Quais são os custos do Aluga Fácil para o inquilino?',options:['Taxa de adesão de R$450 parcelada nos 3 primeiros boletos, sem custo de seguro fiança mensal e taxa anual de 20% do valor do aluguel para renovação','Taxa mensal equivalente a 10% do aluguel durante toda a vigência do contrato','Depósito caução de 2 meses de aluguel reembolsável ao final do contrato','Parcela única de R$900 cobrada no primeiro boleto, sem outros custos adicionais'],correct:0,feedback:'No Aluga Fácil: taxa de adesão de R$450 parcelada nos 3 primeiros boletos, sem custo de seguro fiança mensal, e taxa de renovação anual de 20% do valor do aluguel.'},
+
+    {topic:'Garantias · Aluga Fácil',text:'Ao apresentar o Aluga Fácil para um proprietário, qual é o argumento mais forte para convencê-lo a aceitar essa garantia?',options:['É a garantia com menor custo para o inquilino dentre todas as opções da rede','O Aluga Fácil garante 12 meses de aluguel e encargos (condomínio e IPTU) em caso de inadimplência do inquilino','É a única garantia aceita para imóveis de alto padrão acima de R$5.000 de aluguel','Dispensa qualquer documentação adicional por parte do inquilino'],correct:1,feedback:'O argumento mais forte para o proprietário é que o Aluga Fácil garante 12 meses de aluguel e encargos (condomínio e IPTU) em caso de inadimplência — o que oferece segurança real e tangível.'},
+
+    // PODE LOCAR (1)
+    {topic:'Garantias · Pode Locar',text:'Qual a principal diferença entre o Pode Locar e o Aluga Fácil para o inquilino?',options:['O Pode Locar exige fiador físico além da taxa de adesão; o Aluga Fácil não exige fiador','O Pode Locar tem taxa mensal cobrada durante toda a vigência do contrato; o Aluga Fácil não tem custo mensal','O Pode Locar só é aceito em locações residenciais; o Aluga Fácil cobre comercial e residencial','O Pode Locar exige caução de 1 mês de aluguel; o Aluga Fácil não exige caução'],correct:1,feedback:'A diferença principal é que o Pode Locar tem uma taxa mensal durante toda a vigência do contrato, enquanto o Aluga Fácil não tem custo mensal — apenas a taxa de adesão e a taxa de renovação anual.'},
+
+    // LOFT (2)
+    {topic:'Garantias · Loft',text:'Quais são os principais custos cobrados pelo Loft do inquilino?',options:['Taxa única de adesão de R$450, sem custo mensal ou anual','Taxa de setup paga na contratação mais taxa mensal de seguro durante toda a vigência do contrato','Depósito caução de 3 meses de aluguel devolvido ao fim do contrato','Sem custo para o inquilino — a taxa é paga integralmente pelo proprietário'],correct:1,feedback:'O Loft cobra uma taxa de setup na contratação mais uma taxa mensal de seguro durante toda a vigência do contrato — diferente do Aluga Fácil, que não tem custo mensal.'},
+
+    {topic:'Garantias · Loft / Credaluga / Alpop',text:'Após receber o retorno de aprovação do Loft, Credaluga ou Alpop, qual é a ação obrigatória do cliente antes de assinar o contrato de locação?',options:['Assinar o contrato de locação imediatamente, pois a aprovação já autoriza o início da locação','Realizar a ativação da garantia diretamente com a empresa garantidora — só depois o contrato de locação é assinado','Aguardar 5 dias úteis para que a garantia entre em vigor automaticamente','Pagar a primeira parcela do aluguel como confirmação da aprovação da garantia'],correct:1,feedback:'Após a aprovação, o cliente deve ativar a garantia diretamente com a empresa garantidora (Loft, Credaluga ou Alpop). Somente após essa ativação o contrato de locação pode ser assinado.'},
+
+    // ALPOP (2)
+    {topic:'Garantias Locatícias',text:'O que é uma garantia locatícia e qual sua finalidade em um contrato de locação?',options:['É um seguro obrigatório pago pelo proprietário para cobrir danos ao imóvel durante a locação','É uma forma de assegurar ao proprietário o recebimento do aluguel e encargos em caso de inadimplência do inquilino, substituindo o risco do calote','É um documento emitido pela prefeitura que autoriza o imóvel a ser locado legalmente','É uma taxa cobrada pela imobiliária para cobrir custos de administração do contrato'],correct:1,feedback:'A garantia locatícia é um mecanismo que protege o proprietário contra inadimplência — assegurando o recebimento de aluguel e encargos caso o inquilino não pague. Existem diversas modalidades, cada uma com características e custos diferentes.'},
+
+    {topic:'Garantias · Alpop',text:'Quais são os custos cobrados pelo Alpop do inquilino?',options:['Taxa única de R$450 parcelada nos 3 primeiros boletos, sem custo mensal','Taxa de adesão de R$350 e mensalidade de 11,5% sobre o valor do aluguel durante toda a vigência do contrato','Depósito caução de 2 meses de aluguel devolvido ao fim do contrato, sem custo adicional','Sem custo para o inquilino — a taxa é paga integralmente pelo proprietário do imóvel'],correct:1,feedback:'O Alpop cobra R$350 de taxa de adesão mais uma mensalidade de 11,5% sobre o valor do aluguel durante toda a vigência do contrato.'},
+
+    // FIADOR / CARTA FIANÇA / CAUÇÃO (2)
+    {topic:'Garantias · Fiador e Carta Fiança',text:'Qual a diferença prática entre Fiador e Carta Fiança como modalidades de garantia?',options:['Fiador é uma pessoa física que responde pessoalmente; Carta Fiança é um documento emitido por instituição financeira que garante o pagamento','Fiador é exclusivo para locações comerciais; Carta Fiança apenas para residenciais','Fiador exige depósito em conta vinculada; Carta Fiança é emitida pelo próprio inquilino','Não há diferença prática — são denominações diferentes para a mesma modalidade'],correct:0,feedback:'Fiador = pessoa física que se responsabiliza pessoalmente pelo pagamento. Carta Fiança = documento emitido por banco ou seguradora, sem envolver uma pessoa física como garantidor.'},
+
+    {topic:'Garantias · Caução',text:'Pela Lei do Inquilinato, qual o limite máximo de valor que pode ser exigido como caução em dinheiro?',options:['Até 1 mês de aluguel','Até 2 meses de aluguel','Até 3 meses de aluguel','Não há limite — é negociado livremente entre as partes'],correct:2,feedback:'A Lei do Inquilinato (Lei 8.245/91) limita a caução em dinheiro a 3 meses de aluguel. O valor deve ser depositado em poupança e devolvido com correção ao fim do contrato.'},
+
+    // VISTORIAS E POSSES (2)
+    {topic:'Vistorias e Posses',text:'Por que o laudo de vistoria inicial é considerado documento de proteção jurídica para ambas as partes da locação?',options:['Porque define o valor de aluguel com base no estado de conservação do imóvel','Porque registra formalmente o estado do imóvel antes da entrada do inquilino, servindo como prova em caso de divergências na saída','Porque autoriza o inquilino a realizar reformas estruturais no imóvel','Porque substitui o contrato de locação em situações de conflito'],correct:1,feedback:'Sem o laudo de vistoria inicial, não há como provar quais danos existiam antes e quais foram causados pelo inquilino — o que expõe ambas as partes a conflitos na saída.'},
+
+    {topic:'Vistorias e Posses',text:'Quem realiza a vistoria inicial e entrega as chaves ao inquilino na operação da Crédito Real?',options:['O próprio corretor consultor que intermediou a locação','O proprietário do imóvel, obrigatoriamente presente','O setor especializado de Vistorias e Posses da franquia','Empresa terceirizada contratada diretamente pelo inquilino'],correct:2,feedback:'O setor de Vistorias e Posses conduz a vistoria inicial e a entrega das chaves — garantindo o padrão operacional e jurídico da Crédito Real em cada locação.'},
+
+    // PROCEDIMENTO COMERCIAL (3)
+    {topic:'Procedimento Comercial',text:'O Procedimento Comercial define prazos para cada etapa da locação. O que ocorre quando o corretor não respeita esses prazos?',options:['O Salesforce envia alertas mas não há consequência prática','O coordenador assume o lead sem impacto financeiro para o corretor','O negócio pode ser perdido, o cliente pode desistir e o corretor corre risco de perder comissão','O prazo é estendido automaticamente em 48 horas pelo sistema'],correct:2,feedback:'Os prazos existem para garantir agilidade e confiança. Descumpri-los aumenta o risco de perder cliente, imóvel e comissão — impacto direto no resultado do corretor.'},
+
+    {topic:'Procedimento Comercial',text:'O Procedimento Comercial estabelece regras de prioridade de atendimento. O que isso significa na prática?',options:['O corretor deve atender todos os leads na ordem de chegada, sem exceção','Há critérios definidos para priorizar leads e imóveis — não seguir essas regras pode gerar conflito e perda de negócios','A prioridade é definida exclusivamente pelo proprietário do imóvel','O Salesforce define automaticamente a prioridade sem intervenção do corretor'],correct:1,feedback:'O Procedimento define critérios claros de prioridade. Ignorar essas regras gera conflito interno e pode resultar em perda de negócios e credibilidade.'},
+
+    {topic:'Procedimento Comercial',text:'Qual a atitude correta do corretor ao ter dúvida sobre qual etapa seguir em uma locação em andamento?',options:['Tomar decisão por conta própria para não travar o lead','Aguardar o próximo treinamento presencial da franquia para esclarecer a dúvida','Entrar em contato direto com o proprietário do imóvel para orientação','Consultar a Universidade Corporativa, onde estão disponíveis os materiais, vídeos e procedimentos oficiais da rede'],correct:3,feedback:'Diante de qualquer dúvida, o corretor deve consultar a Universidade Corporativa — onde estão centralizados os materiais, vídeos e procedimentos oficiais da Crédito Real.'}
+]
+
+let answered = {}, submitted = false, finalScore = 0;
+
+// ── Restore saved certificate on page load ──
+window.addEventListener('DOMContentLoaded', function() {
+    const saved = sessionStorage.getItem('cr_cert');
+    if (saved) {
+        try {
+            const d = JSON.parse(saved);
+            document.getElementById('intro').style.display = 'none';
+            document.getElementById('cert-section').style.display = 'block';
+            document.getElementById('certForm').style.display = 'none';
+            document.getElementById('certificate').style.display = 'block';
+            document.getElementById('certBtns').style.display = 'flex';
+            document.getElementById('certName').textContent = d.name;
+            document.getElementById('certScore').textContent = d.score;
+            document.getElementById('certPct').textContent = d.pct;
+            document.getElementById('certDate').textContent = d.date;
+            finalScore = d.rawScore;
+            const banner = document.createElement('div');
+            banner.style.cssText = 'background:#212121;border:1px solid #2e2e2e;border-radius:10px;padding:14px 20px;text-align:center;margin-bottom:20px;font-size:0.88rem;color:#888;';
+            banner.innerHTML = '🎓 Seu certificado foi restaurado da sessão anterior. <button onclick="clearAndRestart()" style="background:none;border:none;color:#ff6b00;cursor:pointer;font-size:0.88rem;text-decoration:underline;">Fazer nova prova</button>';
+            document.getElementById('cert-section').insertBefore(banner, document.getElementById('cert-section').firstChild);
+        } catch(e) { sessionStorage.removeItem('cr_cert'); }
+    }
+});
+
+function startQuiz() {
+    sessionStorage.removeItem('cr_cert');
+    document.getElementById('intro').style.display = 'none';
+    document.getElementById('quiz').style.display = 'block';
+    document.getElementById('stickyBar').style.display = 'flex';
+    renderQuiz();
+}
+
+function renderQuiz() {
+    const c = document.getElementById('quiz');
+    c.innerHTML = '';
+    questions.forEach((q, qi) => {
+        const opts = q.options.map((o, oi) => `<div class="option" id="opt-${qi}-${oi}" onclick="selectOption(${qi},${oi})"><span class="opt-letter">${String.fromCharCode(65+oi)}</span><span>${o}</span></div>`).join('');
+        c.innerHTML += `<div class="question-block" style="animation-delay:${qi*0.04}s"><div class="q-header"><div class="q-number">${qi+1}</div><div><div class="q-topic">${q.topic}</div><div class="q-text">${q.text}</div></div></div><div class="options" id="opts-${qi}">${opts}</div><div class="feedback" id="fb-${qi}"></div></div>`;
+    });
+}
+
+function selectOption(qi, oi) {
+    if (submitted) return;
+    answered[qi] = oi;
+    document.querySelectorAll(`#opts-${qi} .option`).forEach((el,i) => el.classList.toggle('selected', i===oi));
+    const c = Object.keys(answered).length;
+    document.getElementById('answeredCount').textContent = c;
+    document.getElementById('headerProgress').textContent = c+' / 20';
+}
+
+function submitQuiz() {
+    const missing = questions.length - Object.keys(answered).length;
+    if (missing > 0 && !confirm(`Você tem ${missing} questão(ões) sem resposta. Deseja enviar mesmo assim?`)) return;
+    submitted = true;
+    let correct = 0;
+    questions.forEach((q, qi) => {
+        const chosen = answered[qi];
+        const opts = document.querySelectorAll(`#opts-${qi} .option`);
+        const fb = document.getElementById(`fb-${qi}`);
+        opts.forEach(o => o.classList.add('disabled'));
+        opts[q.correct].classList.add('correct');
+        if (chosen !== undefined && chosen !== q.correct) { opts[chosen].classList.add('wrong'); opts[chosen].classList.remove('selected'); }
+        if (chosen === q.correct) { correct++; fb.className='feedback show correct-fb'; fb.innerHTML=`✅ Correto! ${q.feedback}`; }
+        else { fb.className='feedback show wrong-fb'; fb.innerHTML=`❌ Incorreto. Resposta correta: alternativa <strong>${String.fromCharCode(65+q.correct)}</strong>. ${q.feedback}`; }
+    });
+    finalScore = correct;
+    const pct = Math.round((correct/20)*100);
+    const approved = correct >= 14;
+    document.getElementById('stickyBar').style.display = 'none';
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('scoreNum').textContent = correct;
+    document.getElementById('resCorrect').textContent = correct;
+    document.getElementById('resWrong').textContent = 20-correct;
+    document.getElementById('resPct').textContent = pct+'%';
+    document.getElementById('resultTitle').textContent = approved ? '🎉 Aprovado!' : '📚 Não aprovado desta vez';
+    document.getElementById('resultMsg').textContent = approved
+        ? `Parabéns! Você acertou ${correct} de 20 questões (${pct}%). Role para baixo para gerar seu certificado.`
+        : `Você acertou ${correct} de 20 questões (${pct}%). A aprovação exige mínimo 14 acertos. Revise o gabarito e tente novamente.`;
+    document.getElementById('resultBtns').innerHTML = approved
+        ? `<button class="btn btn-secondary" onclick="reviewAnswers()">Revisar Gabarito</button><button class="btn btn-primary" onclick="showCertSection()">Gerar Certificado 🎓</button>`
+        : `<button class="btn btn-secondary" onclick="reviewAnswers()">Revisar Gabarito</button><button class="btn btn-primary" onclick="restartQuiz()">Refazer Prova</button>`;
+    document.getElementById('result').scrollIntoView({behavior:'smooth'});
+}
+
+function showCertSection() {
+    document.getElementById('cert-section').style.display = 'block';
+    document.getElementById('cert-section').scrollIntoView({behavior:'smooth'});
+}
+
+function generateCert() {
+    const name = document.getElementById('certNameInput').value.trim();
+    if (!name) { alert('Por favor, digite seu nome completo.'); return; }
+    const score = finalScore+'/20';
+    const pct = Math.round((finalScore/20)*100)+'%';
+    const date = new Date().toLocaleDateString('pt-BR');
+    document.getElementById('certName').textContent = name;
+    document.getElementById('certScore').textContent = score;
+    document.getElementById('certPct').textContent = pct;
+    document.getElementById('certDate').textContent = date;
+    document.getElementById('certificate').style.display = 'block';
+    document.getElementById('certBtns').style.display = 'flex';
+    document.getElementById('certForm').style.display = 'none';
+    // Save to sessionStorage
+    sessionStorage.setItem('cr_cert', JSON.stringify({name, score, pct, date, rawScore: finalScore}));
+    document.getElementById('certificate').scrollIntoView({behavior:'smooth'});
+}
+
+function copyCertAsImage() {
+    const name = document.getElementById('certName').textContent;
+    const score = document.getElementById('certScore').textContent;
+    const pct = document.getElementById('certPct').textContent;
+    const date = document.getElementById('certDate').textContent;
+
+    const W = 800, H = 440;
+    const canvas = document.createElement('canvas');
+    canvas.width = W * 2;
+    canvas.height = H * 2;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(2, 2);
+
+    ctx.fillStyle = '#1a1a1a';
+    ctx.beginPath(); ctx.roundRect(0,0,W,H,20); ctx.fill();
+
+    ctx.strokeStyle = '#ff6b00'; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.roundRect(2,2,W-4,H-4,18); ctx.stroke();
+
+    const g1 = ctx.createRadialGradient(W,0,0,W,0,250);
+    g1.addColorStop(0,'rgba(255,107,0,0.18)'); g1.addColorStop(1,'rgba(255,107,0,0)');
+    ctx.fillStyle = g1; ctx.fillRect(0,0,W,H);
+
+    const cx = W/2;
+    ctx.textAlign = 'center';
+
+    ctx.fillStyle = '#ff6b00'; ctx.font = 'bold 13px Arial';
+    ctx.fillText('CRÉDITO REAL IMÓVEIS', cx, 52);
+
+    ctx.fillStyle = '#666'; ctx.font = '11px Arial';
+    ctx.fillText('UNIVERSIDADE CR  ·  CERTIFICADO DE CONCLUSÃO', cx, 72);
+
+    ctx.fillStyle = '#2a2a2a'; ctx.fillRect(cx-180,86,360,1);
+
+    ctx.fillStyle = '#666'; ctx.font = '13px Arial';
+    ctx.fillText('Certificamos que', cx, 116);
+
+    ctx.fillStyle = '#ffffff'; ctx.font = 'bold 40px Arial';
+    ctx.fillText(name, cx, 168);
+
+    ctx.fillStyle = '#666'; ctx.font = '13px Arial';
+    ctx.fillText('concluiu com aprovação o treinamento', cx, 196);
+
+    ctx.fillStyle = '#ff6b00'; ctx.font = 'bold 18px Arial';
+    ctx.fillText('Corretores Consultores — Módulo de Locação', cx, 224);
+
+    ctx.fillStyle = '#ff6b00';
+    ctx.beginPath(); ctx.roundRect(cx-36,240,72,3,2); ctx.fill();
+
+    const metas = [{val:score,key:'Acertos'},{val:pct,key:'Aproveitamento'},{val:date,key:'Conclusão'}];
+    metas.forEach((m,i) => {
+        const mx = cx-130+i*130;
+        ctx.fillStyle='#ff6b00'; ctx.font='bold 24px Arial'; ctx.textAlign='center';
+        ctx.fillText(m.val, mx, 284);
+        ctx.fillStyle='#666'; ctx.font='11px Arial';
+        ctx.fillText(m.key, mx, 302);
+    });
+
+    ctx.fillStyle='#2a2a2a'; ctx.fillRect(60,342,W-120,1);
+    ctx.fillStyle='#555'; ctx.font='10px Arial'; ctx.textAlign='center';
+    ctx.fillText('Crédito Real Imóveis  ·  Universidade CR  ·  creditoreal.com.br', cx, 364);
+
+    // Show image + download link directly on the page
+    const dataUrl = canvas.toDataURL('image/png');
+    const container = document.getElementById('certImageContainer');
+    container.innerHTML = `
+        <img src="${dataUrl}" style="max-width:100%;border-radius:12px;border:2px solid #ff6b00;margin-bottom:14px;display:block;">
+        <a href="${dataUrl}" download="Certificado_CR_${name.replace(/\s+/g,'_')}.png" class="btn btn-primary" style="display:inline-block;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.05rem;padding:15px 36px;border-radius:9px;background:#ff6b00;color:#fff;">⬇ Baixar Certificado (.png)</a>
+        <p style="font-size:0.8rem;color:#888;margin-top:10px;">No celular: pressione e segure na imagem → <strong style="color:#ccc">Salvar imagem</strong> ou <strong style="color:#ccc">Copiar</strong> → Cole no WhatsApp</p>
+    `;
+    container.style.display = 'block';
+    container.scrollIntoView({behavior:'smooth'});
+}
+
+function reviewAnswers() { document.getElementById('quiz').scrollIntoView({behavior:'smooth'}); }
+
+function clearAndRestart() { sessionStorage.removeItem('cr_cert'); location.reload(); }
+
+function restartQuiz() {
+    answered={}; submitted=false; finalScore=0;
+    sessionStorage.removeItem('cr_cert');
+    ['result','cert-section'].forEach(id => document.getElementById(id).style.display='none');
+    document.getElementById('certificate').style.display='none';
+    document.getElementById('certForm').style.display='block';
+    document.getElementById('certNameInput').value='';
+    document.getElementById('quiz').style.display='block';
+    document.getElementById('stickyBar').style.display='flex';
+    document.getElementById('answeredCount').textContent='0';
+    document.getElementById('headerProgress').textContent='0 / 20';
+    renderQuiz();
+    window.scrollTo({top:0,behavior:'smooth'});
+}
+    </script>
+</body>
+</html>
