@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinamento Comercial | Crédito Real Imóveis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            padding: 30px;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(255, 107, 0, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .progress-container {
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .progress-header h3 {
+            color: #ff6b00;
+            font-size: 1.2em;
+        }
+
+        .progress-percentage {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ff6b00;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background: #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b00 0%, #ff8c00 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.5);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 200px;
+            padding: 18px 25px;
+            background: #2d2d2d;
+            border: 2px solid #3d3d3d;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .tab:hover {
+            background: #3d3d3d;
+            border-color: #ff6b00;
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            border-color: #ff6b00;
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.4);
+        }
+
+        .tab.completed::after {
+            content: "✓";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            color: #4CAF50;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .content {
+            display: none;
+            background: #2d2d2d;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.4s ease;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content h2 {
+            color: #ff6b00;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #ff6b00;
+            padding-bottom: 10px;
+        }
+
+        .section-description {
+            background: #1a1a1a;
+            padding: 20px;
+            border-left: 4px solid #ff6b00;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            font-size: 1.05em;
+        }
+
+        .welcome-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #e0e0e0;
+            margin-bottom: 25px;
+            background: rgba(255, 107, 0, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        /* Video Cards */
+        .video-card {
+            margin-bottom: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .video-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 107, 0, 0.4);
+            border-color: #ff6b00;
+        }
+
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .video-thumbnail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 50%, rgba(255, 107, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(255, 140, 0, 0.1) 0%, transparent 50%);
+            animation: backgroundPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        .play-icon-wrapper {
+            position: relative;
+            z-index: 3;
+        }
+
+        .play-icon {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            color: white;
+            padding-left: 5px;
+            box-shadow: 0 8px 30px rgba(255, 107, 0, 0.6);
+            transition: all 0.3s ease;
+            z-index: 3;
+        }
+
+        .video-card:hover .play-icon {
+            transform: scale(1.15);
+            box-shadow: 0 12px 40px rgba(255, 107, 0, 0.8);
+        }
+
+        .pulse-ring, .pulse-ring-2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90px;
+            height: 90px;
+            border: 3px solid #ff6b00;
+            border-radius: 50%;
+            animation: pulse 2s ease-out infinite;
+            z-index: 2;
+        }
+
+        .pulse-ring-2 {
+            animation-delay: 1s;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+        }
+
+        .video-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 70%, transparent 100%);
+            padding: 25px 20px 15px;
+            z-index: 2;
+        }
+
+        .video-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            box-shadow: 0 3px 10px rgba(255, 107, 0, 0.4);
+        }
+
+        .video-overlay h3 {
+            font-size: 1.4em;
+            margin-bottom: 8px;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .click-hint {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 107, 0, 0.95);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.85em;
+            font-weight: 600;
+            animation: bounce 2s ease-in-out infinite;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.5);
+            z-index: 3;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .video-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1a1a1a;
+            padding: 15px 20px;
+            border-top: 2px solid #ff6b00;
+        }
+
+        .video-status {
+            font-size: 0.9em;
+            color: #cccccc;
+            font-weight: 500;
+        }
+
+        .video-action {
+            font-size: 1em;
+            color: #ff6b00;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .video-card:hover .video-action {
+            color: #ff8c00;
+            transform: translateX(5px);
+        }
+
+        /* Learning Path Grid */
+        .learning-path {
+            margin: 30px 0;
+            padding: 30px;
+            background: #1a1a1a;
+            border-radius: 15px;
+            border-left: 4px solid #ff6b00;
+        }
+
+        .learning-path h3 {
+            color: #ff6b00;
+            margin-bottom: 25px;
+            font-size: 1.5em;
+        }
+
+        .learning-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .learning-card {
+            background: #2d2d2d;
+            padding: 25px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .learning-card:hover {
+            background: #3d3d3d;
+            border-color: #ff6b00;
+            transform: translateY(-5px);
+        }
+
+        .learning-card-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .learning-card h4 {
+            color: #ff6b00;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .learning-card p {
+            color: #cccccc;
+            line-height: 1.6;
+        }
+
+        /* Checklist */
+        .checklist {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .checklist h3 {
+            color: #ff6b00;
+            margin-bottom: 15px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 8px 0;
+            background: #2d2d2d;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            background: #3d3d3d;
+        }
+
+        .checklist-item.completed {
+            opacity: 0.7;
+            text-decoration: line-through;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .resource-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(255, 107, 0, 0.3);
+        }
+
+        .resource-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 107, 0, 0.5);
+        }
+
+        .resource-link::before {
+            content: "📄 ";
+        }
+
+        .mark-complete {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 600;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .mark-complete:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.5);
+        }
+
+        .mark-complete:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .nav-button {
+            background: #3d3d3d;
+            color: white;
+            border: 2px solid #ff6b00;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            background: #ff6b00;
+            transform: translateX(5px);
+        }
+
+        .nav-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            border-color: #666;
+        }
+
+        /* Completion Section */
+        .completion-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 3px solid #ff6b00;
+        }
+
+        .training-completed-banner {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+            animation: slideIn 0.6s ease;
+            border: 3px solid #66BB6A;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .completed-icon {
+            font-size: 5em;
+            margin-right: 25px;
+            animation: checkmarkPop 0.6s ease;
+        }
+
+        @keyframes checkmarkPop {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .completed-content h3 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            color: white;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .completed-subtitle {
+            font-size: 1.15em;
+            font-weight: 500;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .certificate-banner {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(255, 107, 0, 0.4);
+            animation: slideIn 0.6s ease;
+            animation-delay: 0.2s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .certificate-icon {
+            font-size: 4em;
+            margin-right: 20px;
+            animation: rotate 3s ease-in-out infinite;
+        }
+
+        @keyframes rotate {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .certificate-content h3 {
+            font-size: 1.6em;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .highlight-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .evaluation-card {
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #ff6b00;
+            margin-bottom: 25px;
+        }
+
+        .evaluation-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .evaluation-badge {
+            display: inline-block;
+            background: #ff6b00;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.85em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .evaluation-header h4 {
+            font-size: 1.8em;
+            color: #ff6b00;
+            margin: 0;
+        }
+
+        .evaluation-requirements {
+            margin: 30px 0;
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: flex-start;
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ff6b00;
+            transition: all 0.3s ease;
+        }
+
+        .requirement-item:hover {
+            background: #3d3d3d;
+            transform: translateX(5px);
+        }
+
+        .requirement-item .icon {
+            font-size: 2em;
+            margin-right: 20px;
+            min-width: 40px;
+        }
+
+        .requirement-item strong {
+            color: #ff6b00;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .requirement-item p {
+            margin: 0;
+            color: #cccccc;
+            line-height: 1.6;
+        }
+
+        .evaluation-cta {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .cta-text {
+            margin-bottom: 25px;
+        }
+
+        .cta-text p {
+            color: #ff6b00;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .cta-text ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .cta-text li {
+            padding: 8px 0;
+            font-size: 1.05em;
+            color: #cccccc;
+        }
+
+        .evaluation-button {
+            display: block;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.3em;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+            border: none;
+            cursor: pointer;
+        }
+
+        .evaluation-button:hover {
+            background: linear-gradient(135deg, #45a049 0%, #388e3c 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.6);
+        }
+
+        .success-footer {
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4CAF50;
+            text-align: center;
+        }
+
+        .success-footer p {
+            margin: 0;
+            font-size: 1.05em;
+            color: #cccccc;
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                min-width: 100%;
+            }
+
+            header h1 {
+                font-size: 1.6em;
+            }
+
+            .navigation-buttons {
+                flex-direction: column;
+            }
+
+            .learning-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Treinamento Comercial</h1>
+            <p>Capacitação Completa | Crédito Real Imóveis</p>
+        </header>
+
+        <div class="progress-container">
+            <div class="progress-header">
+                <h3>📊 Seu Progresso no Treinamento</h3>
+                <span class="progress-percentage">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="boasvindas">
+                <strong>Boas-vindas DNA CR</strong><br>
+                <small>Início da jornada</small>
+            </div>
+            <div class="tab" data-tab="conceitos">
+                <strong>Módulo 1: Conceitos Básicos</strong><br>
+                <small>Fundamentos da locação</small>
+            </div>
+            <div class="tab" data-tab="estrutura">
+                <strong>Módulo 2: Estrutura de Setores</strong><br>
+                <small>Organização operacional</small>
+            </div>
+            <div class="tab" data-tab="prova">
+                <strong>🎯 Prova Final</strong><br>
+                <small>Avaliação e certificado</small>
+            </div>
+        </div>
+
+        <!-- BOAS-VINDAS DNA CR -->
+        <div class="content active" data-content="boasvindas">
+            <h2>🏠 Boas-vindas ao DNA CR</h2>
+            
+            <p class="welcome-text">
+                Olá! Seja muito bem-vindo(a) à <strong style="color: #ff6b00;">Crédito Real Imóveis</strong> – uma rede com mais de <strong style="color: #ff6b00;">90 anos de tradição, credibilidade e inovação</strong> no mercado imobiliário brasileiro. 
+                <br><br>
+                Você agora faz parte de uma família que valoriza a excelência e o crescimento contínuo. Antes de começar sua jornada de capacitação, assista ao vídeo institucional abaixo para conhecer nossa história, valores e a força da nossa rede! 🚀
+            </p>
+
+            <div style="background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%); padding: 25px; border-radius: 12px; margin-bottom: 30px; border-left: 5px solid #ff8c00; box-shadow: 0 6px 20px rgba(255, 107, 0, 0.3);">
+                <h3 style="color: white; font-size: 1.4em; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    🎬 Vídeo Institucional Crédito Real Imóveis
+                </h3>
+                <p style="color: rgba(255, 255, 255, 0.95); font-size: 1.1em; line-height: 1.7; margin: 0;">
+                    Conheça a trajetória de <strong>90 anos de excelência</strong> no mercado imobiliário, nossos valores, diferenciais e o que nos torna referência nacional em locação de imóveis. Este vídeo é essencial para você entender o DNA da empresa que agora faz parte da sua história profissional!
+                </p>
+            </div>
+
+            <div class="video-card" onclick="window.open('https://youtu.be/Syl3vfSSH_o?si=hXMs93TnZCsDWv6-', '_blank')">
+                <div class="video-thumbnail">
+                    <div class="play-icon-wrapper">
+                        <div class="play-icon">▶</div>
+                        <div class="pulse-ring"></div>
+                        <div class="pulse-ring-2"></div>
+                    </div>
+                    <div class="video-overlay">
+                        <div class="video-badge">📹 VÍDEO INSTITUCIONAL</div>
+                        <h3>Conheça a Crédito Real Imóveis</h3>
+                    </div>
+                    <div class="click-hint">👆 Clique para assistir agora</div>
+                </div>
+                <div class="video-footer">
+                    <span class="video-status">🎯 Essencial para iniciar</span>
+                    <span class="video-action">ASSISTIR AGORA ➜</span>
+                </div>
+            </div>
+
+            <div class="learning-path">
+                <h3>🎯 O que você aprenderá nesta Trilha de Capacitação Comercial</h3>
+                <div class="learning-grid">
+                    <div class="learning-card">
+                        <div class="learning-card-icon">🏢</div>
+                        <h4>Fundamentos de Locação</h4>
+                        <p>Fluxo completo da locação, Lei do Inquilinato, estrutura de setores e fundamentos operacionais</p>
+                    </div>
+                    <div class="learning-card">
+                        <div class="learning-card-icon">🎯</div>
+                        <h4>Captação Estratégica</h4>
+                        <p>Estratégias de captação, scripts de abordagem, documentação e gestão de estoque de imóveis</p>
+                    </div>
+                    <div class="learning-card">
+                        <div class="learning-card-icon">💼</div>
+                        <h4>Atendimento de Excelência</h4>
+                        <p>Scripts de atendimento, técnicas de negociação, fidelização e organização de rotina produtiva</p>
+                    </div>
+                    <div class="learning-card">
+                        <div class="learning-card-icon">⚙️</div>
+                        <h4>Domínio de Sistemas</h4>
+                        <p>Salesforce, Power Loc, Chatwoot e todo ecossistema de IAs que potencializam sua produtividade</p>
+                    </div>
+                    <div class="learning-card">
+                        <div class="learning-card-icon">🔐</div>
+                        <h4>Processos Operacionais</h4>
+                        <p>Garantias locatícias, análise de crédito, vistorias, chaves e todos os procedimentos padronizados</p>
+                    </div>
+                    <div class="learning-card">
+                        <div class="learning-card-icon">📊</div>
+                        <h4>Gestão Estratégica</h4>
+                        <p>Indicadores, painéis gerenciais, planejamento estratégico e gestão de equipe de alta performance</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checklist">
+                <h3>✅ Checklist de Aprendizado</h3>
+                <label class="checklist-item">
+                    <input type="checkbox" class="module-checkbox" data-module="boasvindas" data-item="1">
+                    <span>Compreendi a história e missão da Crédito Real Imóveis</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" class="module-checkbox" data-module="boasvindas" data-item="2">
+                    <span>Entendi o modelo de franquias e como funciona a rede</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" class="module-checkbox" data-module="boasvindas" data-item="3">
+                    <span>Reconheço a importância estratégica da área de locações</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" class="module-checkbox" data-module="boasvindas" data-item="4">
+                    <span>Estou motivado(a) para fazer parte desta equipe</span>
+                </label>
+            </div>
+
+            <button class="mark-complete" data-section="boasvindas">
+                ✓ Marcar Módulo como Concluído
+            </button>
+
+            <div class="navigation-buttons">
+                <button class="nav-button" disabled>← Módulo Anterior</button>
+                <button class="nav-button" data-next="conceitos">Próximo Módulo →</button>
+            </div>
+        </div>
+
+        <!-- MÓDULO 1: CONCEITOS BÁSICOS -->
+        <div class="content" data-content="conceitos">
+            <h2>📚 Módulo 1: Conceitos Básicos de Locação</h2>
+            
+            <div class="section-description">
+                <strong>Sobre este módulo:</strong> Nesta seção, você aprenderá os fundamentos essenciais do mercado de locação imobiliária, compreendendo os conceitos-chave, legislação aplicável e práticas recomendadas para uma atuação profissional e segura.
+            </div>
+
+            <div class="video-card" onclick="window.open('https://www.canva.com/design/DAHDF7_GJnA/gFa9mtglyG-4l09B5ekRJw/watch?embed', '_blank')">
+                <div class="video-thumbnail">
+                    <div class="play-icon-wrapper">
+                        <div class="play-icon">▶</div>
+                        <div class="pulse-ring"></div>
+                        <div class="pulse-ring-2"></div>
+                    </div>
+                    <div class="video-overlay">
+                        <div class="video-badge">📹 VÍDEO ESSENCIAL</div>
+                        <h3>Módulo 1: Conceitos Básicos de Locação</h3>
+                    </div>
+                    <div class="click-hint">👆 Clique para assistir agora</div>
+                </div>
+                <div class="video-footer">
+                    <span class="video-status">🎯 Fundamental para o certificado</span>
+                    <span class="video-action">ASSISTIR AGORA ➜</span>
+                </div>
+            </div>
+
+            <div class="checklist">
+                <h3>✅ Checklist de Aprendizado</h3>
+                <label class="checklist-item">
+                    <input type="checkbox" class="module-checkbox" data-module="conceitos" data-item="1">
+                    <span>Assisti ao vídeo completo sobre conceitos básicos</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" class="module-checkbox" data-module="conceitos" data-item="2">
+                    <span>Compreendi os principais termos técnicos da locação</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" class="module-checkbox" data-module="conceitos" data-item="3">
+                    <span>Consultei a Lei do Inquilinato para referência</span>
+                </label>
+            </div>
+
+            <a href="https://www.planalto.gov.br/ccivil_03/leis/l8245.htm" 
+               target="_blank" 
+               class="resource-link">
+               Consultar Lei do Inquilinato (Lei nº 8.245/1991)
+            </a>
+
+            <button class="mark-complete" data-section="conceitos">
+                ✓ Marcar Módulo como Concluído
+            </button>
+
+            <div class="navigation-buttons">
+                <button class="nav-button" data-prev="boasvindas">← Módulo Anterior</button>
+                <button class="nav-button" data-next="estrutura">Próximo Módulo →</button>
+            </div>
+        </div>
+
+        <!-- MÓDULO 2: ESTRUTURA DE SETORES -->
+        <div class="content" data-content="estrutura">
+            <h2>🏢 Módulo 2: Estrutura de Setores da Locação</h2>
+            
+            <div class="section-description">
+                <strong>Sobre este módulo:</strong> Conheça a organização operacional do setor de locação, compreendendo as diferentes áreas, responsabilidades e fluxos de trabalho que garantem eficiência e qualidade no atendimento ao cliente.
+            </div>
+
+            <div class="video-card" onclick="window.open('https://www.canva.com/design/DAHDF5E3Ag4/NhAvPaSIME9aoCtREZi-1A/watch?embed', '_blank')">
+                <div class="video-thumbnail">
+                    <div class="play-icon-wrapper">
+                        <div class="play-icon">▶</div>
+                        <div class="pulse-ring"></div>
+                        <div class="pulse-ring-2"></div>
+                    </div>
+                    <div class="video-overlay">
+                        <div class="video-badge">📹 VÍDEO ESSENCIAL</div>
+                        <h3>Módulo 2: Estrutura de Setores da Locação</h3>
+                    </div>
+                    <div class="click-hint">👆 Clique para assistir agora</div>
+                </div>
+                <div class="video-footer">
+                    <span class="video-status">🎯 Fundamental para o certificado</span>
+                    <span class="video-action">ASSISTIR AGORA ➜</span>
+                </div>
+            </div>
+
+            <div class="checklist">
+                <h3>✅ Checklist de Aprendizado</h3>
+                <label class="checklist-item">
+                    <input type="checkbox" class="module-checkbox" data-module="estrutura" data-item="1">
+                    <span>Assisti ao vídeo completo sobre estrutura de setores</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" class="module-checkbox" data-module="estrutura" data-item="2">
+                    <span>Identifiquei os principais setores da operação de locação</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" class="module-checkbox" data-module="estrutura" data-item="3">
+                    <span>Compreendi o fluxo de trabalho entre os setores</span>
+                </label>
+            </div>
+
+            <button class="mark-complete" data-section="estrutura">
+                ✓ Marcar Módulo como Concluído
+            </button>
+
+            <div class="navigation-buttons">
+                <button class="nav-button" data-prev="conceitos">← Módulo Anterior</button>
+                <button class="nav-button" data-next="prova">Próximo Módulo →</button>
+            </div>
+        </div>
+
+        <!-- MÓDULO PROVA FINAL -->
+        <div class="content" data-content="prova">
+            <h2>🎯 Prova Final - Avaliação de Certificação</h2>
+            
+            <div class="section-description">
+                <strong>Parabéns por chegar até aqui!</strong> Você completou todos os módulos do treinamento. Agora é hora de realizar a avaliação final e conquistar seu certificado oficial da Crédito Real Imóveis.
+            </div>
+
+            <div class="completion-section">
+                <div class="training-completed-banner">
+                    <div class="completed-icon">✅</div>
+                    <div class="completed-content">
+                        <h3>🎉 CURSO CONCLUÍDO COM SUCESSO!</h3>
+                        <p class="completed-subtitle">Você assistiu todos os módulos e está preparado para a próxima etapa</p>
+                    </div>
+                </div>
+
+                <div class="certificate-banner">
+                    <div class="certificate-icon">🎓</div>
+                    <div class="certificate-content">
+                        <h3>Agora falta apenas um passo para conquistar seu certificado!</h3>
+                        <p class="highlight-text">Realize a avaliação final e comprove seu conhecimento</p>
+                    </div>
+                </div>
+
+                <div class="evaluation-card">
+                    <div class="evaluation-header">
+                        <span class="evaluation-badge">PRÓXIMO PASSO OBRIGATÓRIO</span>
+                        <h4>📝 Realize a Avaliação Final</h4>
+                    </div>
+                    
+                    <div class="evaluation-requirements">
+                        <div class="requirement-item">
+                            <span class="icon">✅</span>
+                            <div>
+                                <strong>Pontuação Mínima:</strong>
+                                <p>É necessário atingir 70% de acertos para ser aprovado</p>
+                            </div>
+                        </div>
+                        <div class="requirement-item">
+                            <span class="icon">📍</span>
+                            <div>
+                                <strong>Onde fazer:</strong>
+                                <p>Acesse a Universidade Corporativa dentro do curso</p>
+                            </div>
+                        </div>
+                        <div class="requirement-item">
+                            <span class="icon">⚠️</span>
+                            <div>
+                                <strong>Importante:</strong>
+                                <p>Sem a avaliação, você NÃO receberá o certificado</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="evaluation-cta">
+                        <div class="cta-text">
+                            <p><strong>🎯 O certificado é fundamental para:</strong></p>
+                            <ul>
+                                <li>✓ Comprovar sua capacitação profissional</li>
+                                <li>✓ Validar conhecimento na rede Crédito Real</li>
+                                <li>✓ Aumentar sua credibilidade com clientes</li>
+                                <li>✓ Avançar na carreira como corretor</li>
+                            </ul>
+                        </div>
+                        <a href="https://universidade.centraldofranqueado.com.br/f20c2c8b-5f94-4e2a-a164-1a32ae419065/meus-cursos/59ca6594-0266-4d92-9c4a-c7004c8e288b/executar" target="_blank" class="evaluation-button">
+                            🚀 IR PARA A AVALIAÇÃO
+                        </a>
+                    </div>
+                </div>
+
+                <div class="success-footer">
+                    <p>💡 <strong>Dica:</strong> Revise os conteúdos dos vídeos antes de fazer a avaliação para garantir sua aprovação!</p>
+                </div>
+            </div>
+
+            <div class="navigation-buttons">
+                <button class="nav-button" data-prev="estrutura">← Módulo Anterior</button>
+                <button class="nav-button" disabled>Próximo Módulo →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sistema de Navegação por Abas
+        const tabs = document.querySelectorAll('.tab');
+        const contents = document.querySelectorAll('.content');
+        let visitedModules = new Set();
+        let currentModule = 'boasvindas';
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.dataset.tab;
+                
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.querySelector(`[data-content="${targetTab}"]`).classList.add('active');
+                
+                // Marca o módulo anterior como visitado
+                if (currentModule) {
+                    visitedModules.add(currentModule);
+                }
+                
+                currentModule = targetTab;
+                updateProgress();
+                
+                // Scroll suave para o topo
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Sistema de Progresso - SEMPRE INICIA DO ZERO
+        const totalSections = 4; // Agora são 4 módulos
+        const moduleOrder = ['boasvindas', 'conceitos', 'estrutura', 'prova'];
+
+        function updateProgress() {
+            // Conta quantos módulos foram visitados (incluindo o atual)
+            let completedCount = visitedModules.size;
+            
+            // Adiciona o módulo atual se não estiver na lista
+            if (currentModule && !visitedModules.has(currentModule)) {
+                completedCount++;
+            }
+            
+            const percentage = (completedCount / totalSections) * 100;
+            const progressBar = document.querySelector('.progress-fill');
+            const progressText = document.querySelector('.progress-percentage');
+            
+            if (progressBar && progressText) {
+                progressBar.style.width = percentage + '%';
+                progressText.textContent = Math.round(percentage) + '%';
+            }
+            
+            // Marca as abas visitadas
+            visitedModules.forEach(module => {
+                const tab = document.querySelector(`[data-tab="${module}"]`);
+                if (tab) tab.classList.add('completed');
+            });
+        }
+
+        // Botões de Marcar como Concluído
+        document.querySelectorAll('.mark-complete').forEach(button => {
+            button.addEventListener('click', () => {
+                const section = button.dataset.section;
+                
+                visitedModules.add(section);
+                button.textContent = '✓ Módulo Concluído';
+                button.disabled = true;
+                button.style.background = '#666';
+                button.style.cursor = 'not-allowed';
+                
+                updateProgress();
+            });
+        });
+
+        // Sistema de Checklist
+        document.querySelectorAll('.module-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    checkbox.closest('.checklist-item').classList.add('completed');
+                } else {
+                    checkbox.closest('.checklist-item').classList.remove('completed');
+                }
+            });
+        });
+
+        // Botões de Navegação
+        document.querySelectorAll('.nav-button[data-next]').forEach(button => {
+            button.addEventListener('click', () => {
+                const nextTab = button.dataset.next;
+                const tab = document.querySelector(`[data-tab="${nextTab}"]`);
+                if (tab) tab.click();
+            });
+        });
+
+        document.querySelectorAll('.nav-button[data-prev]').forEach(button => {
+            button.addEventListener('click', () => {
+                const prevTab = button.dataset.prev;
+                const tab = document.querySelector(`[data-tab="${prevTab}"]`);
+                if (tab) tab.click();
+            });
+        });
+
+        // Inicializar progresso ao carregar a página
+        // SEMPRE INICIA DO ZERO - SEM localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
